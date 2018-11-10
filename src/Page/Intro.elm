@@ -1,8 +1,10 @@
 module Page.Intro exposing (Model, Msg, initialModel, update, view)
 
+import Browser.Navigation as Nav
 import Element exposing (Element, alignLeft, centerX, centerY, column, el, fill, fillPortion, padding, paragraph, px, row, spacing, text, width, wrappedRow)
 import Element.Font as Font
 import Element.Input as Input
+import Navigation exposing (gamePath)
 
 
 
@@ -24,14 +26,14 @@ initialModel =
 
 
 type Msg
-    = StartGame
+    = StartGame Nav.Key
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        StartGame ->
-            ( Started, Cmd.none )
+        StartGame navKey ->
+            ( Started, Nav.pushUrl navKey gamePath )
 
 
 
@@ -43,8 +45,8 @@ emptyColumn portion =
     column [ width <| fillPortion portion ] [ Element.none ]
 
 
-view : Model -> Element Msg
-view model =
+view : Nav.Key -> Model -> Element Msg
+view navKey model =
     row [ spacing 20 ]
         [ emptyColumn 2
         , column
@@ -73,7 +75,7 @@ view model =
                     { onPress =
                         case model of
                             NotStarted ->
-                                Just StartGame
+                                Just <| StartGame navKey
 
                             Started ->
                                 Nothing

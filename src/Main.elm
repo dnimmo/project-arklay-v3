@@ -6,6 +6,7 @@ import Element exposing (Element, centerX, centerY, el, fill, layout, rgb255, wi
 import Element.Background as Background
 import Element.Font as Font
 import Html exposing (text)
+import Navigation exposing (Route(..), routeUrlRequest)
 import Page.Intro as Intro
 import Url exposing (Url)
 
@@ -35,13 +36,13 @@ chooseTitle state =
             "Project Arklay | Intro"
 
 
-chooseBody : State -> Element Msg
-chooseBody state =
+chooseBody : Model -> Element Msg
+chooseBody { key, state } =
     let
         body =
             case state of
                 ViewIntro hasStarted ->
-                    Element.map (\x -> IntroMsg x) <| Intro.view hasStarted
+                    Element.map (\x -> IntroMsg x) <| Intro.view key hasStarted
     in
     body
 
@@ -63,7 +64,7 @@ view model =
                 , width fill
                 ]
             <|
-                chooseBody model.state
+                chooseBody model
         ]
     }
 
@@ -81,6 +82,32 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        -- HANDLE LINKS
+        ActivatedLink urlContainer ->
+            case urlContainer of
+                Internal url ->
+                    ( model, Nav.pushUrl model.key url.path )
+
+                External path ->
+                    ( model, Cmd.none )
+
+        ChangedUrl url ->
+            case routeUrlRequest url of
+                Intro ->
+                    ( { model
+                        | state = ViewIntro Intro.initialModel
+                      }
+                    , Cmd.none
+                    )
+
+                Game ->
+                    ( { model
+                        | state = ViewIntro Intro.initialModel
+                      }
+                    , Cmd.none
+                    )
+
+        -- HANDLE EVERYTHING ELSE
         IntroMsg msgReceived ->
             case model.state of
                 ViewIntro hasStarted ->
@@ -97,9 +124,6 @@ update msg model =
                       }
                     , mappedCommand
                     )
-
-        _ ->
-            ( model, Cmd.none )
 
 
 
