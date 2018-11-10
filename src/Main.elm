@@ -7,6 +7,7 @@ import Element.Background as Background
 import Element.Font as Font
 import Html exposing (text)
 import Navigation exposing (Route(..), routeUrlRequest)
+import Page.Game as Game
 import Page.Intro as Intro
 import Url exposing (Url)
 
@@ -23,50 +24,7 @@ type alias Model =
 
 type State
     = ViewIntro Intro.Model
-
-
-
--- VIEW
-
-
-chooseTitle : State -> String
-chooseTitle state =
-    case state of
-        ViewIntro _ ->
-            "Project Arklay | Intro"
-
-
-chooseBody : Model -> Element Msg
-chooseBody { key, state } =
-    let
-        body =
-            case state of
-                ViewIntro hasStarted ->
-                    Element.map (\x -> IntroMsg x) <| Intro.view key hasStarted
-    in
-    body
-
-
-view : Model -> Document Msg
-view model =
-    { title = chooseTitle model.state
-    , body =
-        [ layout
-            [ Background.color <| rgb255 20 20 24
-            , Font.color <| rgb255 250 250 250
-            , Font.center
-            , width fill
-            ]
-          <|
-            el
-                [ centerX
-                , centerY
-                , width fill
-                ]
-            <|
-                chooseBody model
-        ]
-    }
+    | ViewGame Game.Model
 
 
 
@@ -77,6 +35,7 @@ type Msg
     = ChangedUrl Url
     | ActivatedLink Browser.UrlRequest
     | IntroMsg Intro.Msg
+    | GameMsg Game.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -102,7 +61,7 @@ update msg model =
 
                 Game ->
                     ( { model
-                        | state = ViewIntro Intro.initialModel
+                        | state = ViewGame Game.initialModel
                       }
                     , Cmd.none
                     )
@@ -124,6 +83,79 @@ update msg model =
                       }
                     , mappedCommand
                     )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        GameMsg msgReceived ->
+            case model.state of
+                ViewGame gameModel ->
+                    let
+                        ( updatedGameModel, command ) =
+                            Game.update msgReceived gameModel
+
+                        mappedCommand =
+                            Cmd.map GameMsg command
+                    in
+                    ( { model
+                        | state =
+                            ViewGame updatedGameModel
+                      }
+                    , mappedCommand
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
+
+
+-- VIEW
+
+
+chooseTitle : State -> String
+chooseTitle state =
+    case state of
+        ViewIntro _ ->
+            "Project Arklay | Intro"
+
+        ViewGame { room } ->
+            "Project Arklay | " ++ room.name
+
+
+chooseBody : Model -> Element Msg
+chooseBody { key, state } =
+    let
+        body =
+            case state of
+                ViewIntro hasStarted ->
+                    Element.map (\msg -> IntroMsg msg) <| Intro.view key hasStarted
+
+                ViewGame gameModel ->
+                    Element.map (\msg -> GameMsg msg) <| Game.view gameModel
+    in
+    body
+
+
+view : Model -> Document Msg
+view model =
+    { title = chooseTitle model.state
+    , body =
+        [ layout
+            [ Background.color <| rgb255 20 20 24
+            , Font.color <| rgb255 250 250 250
+            , Font.center
+            , width fill
+            ]
+          <|
+            el
+                [ centerX
+                , centerY
+                , width fill
+                ]
+            <|
+                chooseBody model
+        ]
+    }
 
 
 
