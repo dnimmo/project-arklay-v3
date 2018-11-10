@@ -21,7 +21,7 @@ type alias Model =
 
 
 type State
-    = ViewIntro
+    = ViewIntro Intro.Model
 
 
 
@@ -31,15 +31,19 @@ type State
 chooseTitle : State -> String
 chooseTitle state =
     case state of
-        ViewIntro ->
-            "Project Arklay"
+        ViewIntro _ ->
+            "Project Arklay | Intro"
 
 
-chooseBody : State -> Element msg
+chooseBody : State -> Element Msg
 chooseBody state =
-    case state of
-        ViewIntro ->
-            Intro.view
+    let
+        body =
+            case state of
+                ViewIntro hasStarted ->
+                    Element.map (\x -> IntroMsg x) <| Intro.view hasStarted
+    in
+    body
 
 
 view : Model -> Document Msg
@@ -71,11 +75,31 @@ view model =
 type Msg
     = ChangedUrl Url
     | ActivatedLink Browser.UrlRequest
+    | IntroMsg Intro.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        IntroMsg msgReceived ->
+            case model.state of
+                ViewIntro hasStarted ->
+                    let
+                        ( updatedIntroModel, command ) =
+                            Intro.update msgReceived hasStarted
+
+                        mappedCommand =
+                            Cmd.map IntroMsg command
+                    in
+                    ( { model
+                        | state =
+                            ViewIntro updatedIntroModel
+                      }
+                    , mappedCommand
+                    )
+
+        _ ->
+            ( model, Cmd.none )
 
 
 
@@ -84,7 +108,7 @@ update msg model =
 
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url navKey =
-    update (ChangedUrl url) { key = navKey, state = ViewIntro }
+    update (ChangedUrl url) { key = navKey, state = ViewIntro Intro.initialModel }
 
 
 
