@@ -2,6 +2,7 @@ module Main exposing (main)
 
 import Browser exposing (Document, UrlRequest(..))
 import Browser.Navigation as Nav
+import Data.Room exposing (roomInfo)
 import Element exposing (Element, centerX, centerY, el, fill, layout, rgb255, width)
 import Element.Background as Background
 import Element.Font as Font
@@ -119,7 +120,11 @@ chooseTitle state =
             "Project Arklay | Intro"
 
         ViewGame { room } ->
-            "Project Arklay | " ++ room.name
+            let
+                { name } =
+                    roomInfo room
+            in
+            "Project Arklay | " ++ name
 
 
 chooseBody : Model -> Element Msg

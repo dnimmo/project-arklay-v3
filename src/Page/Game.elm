@@ -1,7 +1,11 @@
 module Page.Game exposing (Model, Msg, initialModel, update, view)
 
-import Data.Room as Room exposing (Room)
-import Element exposing (Element, fill, paragraph, text, width, wrappedRow)
+import Data.Room as Room exposing (Direction(..), Room, roomInfo)
+import Element exposing (Element, centerX, centerY, column, fill, fillPortion, padding, paragraph, rgb255, row, spacing, text, width, wrappedRow)
+import Element.Border as Border
+import Element.Font as Font
+import Element.Input as Input
+import Page.Game.DirectionControls as DirectionControls
 import View.Layout exposing (mainLayout)
 
 
@@ -31,7 +35,7 @@ initialModel =
 type Msg
     = ToggleInventory
     | UseItem
-    | ChangeRoom
+    | ChangeRoom Room
     | ExamineRoom
 
 
@@ -41,6 +45,13 @@ update msg model =
         ToggleInventory ->
             ( { model
                 | displayInventory = not model.displayInventory
+              }
+            , Cmd.none
+            )
+
+        ChangeRoom room ->
+            ( { model
+                | room = room
               }
             , Cmd.none
             )
@@ -55,8 +66,57 @@ update msg model =
 
 view : Model -> Element Msg
 view { room, inventory, displayInventory } =
+    let
+        { intro, surroundings, item, availableDirections } =
+            roomInfo room
+
+        playerHasItems =
+            case List.head inventory of
+                Just _ ->
+                    True
+
+                Nothing ->
+                    False
+    in
     mainLayout
-        [ wrappedRow
+        [ row
             [ width fill ]
-            [ paragraph [] [ text room.intro ] ]
+            [ paragraph [] [ text intro ] ]
+        , row
+            [ width fill ]
+            [ paragraph [] [ text surroundings ] ]
+        , row
+            [ Border.solid
+            , Border.width 1
+            , Border.color <| rgb255 250 250 250
+            , width fill
+            ]
+            [ Element.none ]
+        , DirectionControls.view availableDirections ChangeRoom
+        , row
+            [ centerX
+            , Font.color <|
+                case playerHasItems of
+                    True ->
+                        rgb255 250 250 250
+
+                    False ->
+                        rgb255 100 100 100
+            ]
+            [ case displayInventory of
+                True ->
+                    text "INVENTORY HERE"
+
+                False ->
+                    Input.button []
+                        { onPress =
+                            case playerHasItems of
+                                True ->
+                                    Just ToggleInventory
+
+                                False ->
+                                    Nothing
+                        , label = text "Inventory"
+                        }
+            ]
         ]
