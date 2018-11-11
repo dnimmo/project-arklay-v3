@@ -6,29 +6,57 @@ import Element exposing (Element, centerX, centerY, column, fillPortion, padding
 import Element.Input as Input
 
 
+enterKey =
+    "Enter"
+
+
+upstairsKey =
+    "Upstairs"
+
+
+downstairsKey =
+    "Downstairs"
+
+
+northKey =
+    "North"
+
+
+westKey =
+    "West"
+
+
+eastKey =
+    "East"
+
+
+southKey =
+    "South"
+
+
 view : Dict String Room -> (Room -> msg) -> Element msg
 view directions msg =
     let
         enter =
-            Dict.get "Enter" directions
+            Dict.get enterKey directions
 
         upstairs =
-            Dict.get "Upstairs" directions
+            Dict.get upstairsKey directions
 
         downstairs =
-            Dict.get "Downstairs" directions
+            Dict.get downstairsKey directions
 
         north =
-            Dict.get "North" directions
+            Dict.get northKey directions
 
         west =
-            Dict.get "West" directions
+            Dict.get westKey directions
 
         east =
-            Dict.get "East" directions
+            Dict.get eastKey directions
 
         south =
-            Dict.get "South" directions
+            Dict.get southKey directions
 
         buttonAttributes =
             [ padding 20 ]
@@ -46,7 +74,7 @@ view directions msg =
                     Input.button buttonAttributes
                         { onPress =
                             Just <| msg room
-                        , label = text "West"
+                        , label = text westKey
                         }
 
                 Nothing ->
@@ -61,7 +89,7 @@ view directions msg =
                     Input.button buttonAttributes
                         { onPress =
                             Just <| msg room
-                        , label = text "Enter"
+                        , label = text enterKey
                         }
 
                 Nothing ->
@@ -71,7 +99,7 @@ view directions msg =
                     Input.button buttonAttributes
                         { onPress =
                             Just <| msg room
-                        , label = text "Upstairs"
+                        , label = text upstairsKey
                         }
 
                 Nothing ->
@@ -81,7 +109,7 @@ view directions msg =
                     Input.button buttonAttributes
                         { onPress =
                             Just <| msg room
-                        , label = text "North"
+                        , label = text northKey
                         }
 
                 Nothing ->
@@ -91,7 +119,7 @@ view directions msg =
                     Input.button buttonAttributes
                         { onPress =
                             Just <| msg room
-                        , label = text "South"
+                        , label = text southKey
                         }
 
                 Nothing ->
@@ -101,7 +129,7 @@ view directions msg =
                     Input.button buttonAttributes
                         { onPress =
                             Just <| msg room
-                        , label = text "Downstairs"
+                        , label = text downstairsKey
                         }
 
                 Nothing ->
@@ -116,7 +144,7 @@ view directions msg =
                     Input.button buttonAttributes
                         { onPress =
                             Just <| msg room
-                        , label = text "East"
+                        , label = text eastKey
                         }
 
                 Nothing ->
