@@ -1,100 +1,34 @@
 module Page.Game.DirectionControls exposing (view)
 
-import Data.Room exposing (Direction(..), Room)
+import Data.Room exposing (Room)
+import Dict exposing (Dict)
 import Element exposing (Element, centerX, centerY, column, fillPortion, padding, row, spacing, text, width)
 import Element.Input as Input
 
 
-
--- TODO: Make this module less shit! :D
-
-
-view : List Direction -> (Room -> msg) -> Element msg
+view : Dict String Room -> (Room -> msg) -> Element msg
 view directions msg =
     let
         enter =
-            directions
-                |> List.filter
-                    (\x ->
-                        case x of
-                            Enter _ ->
-                                True
-
-                            _ ->
-                                False
-                    )
+            Dict.get "Enter" directions
 
         upstairs =
-            directions
-                |> List.filter
-                    (\x ->
-                        case x of
-                            Upstairs _ ->
-                                True
-
-                            _ ->
-                                False
-                    )
+            Dict.get "Upstairs" directions
 
         downstairs =
-            directions
-                |> List.filter
-                    (\x ->
-                        case x of
-                            Downstairs _ ->
-                                True
-
-                            _ ->
-                                False
-                    )
+            Dict.get "Downstairs" directions
 
         north =
-            directions
-                |> List.filter
-                    (\x ->
-                        case x of
-                            North _ ->
-                                True
-
-                            _ ->
-                                False
-                    )
+            Dict.get "North" directions
 
         west =
-            directions
-                |> List.filter
-                    (\x ->
-                        case x of
-                            West _ ->
-                                True
-
-                            _ ->
-                                False
-                    )
+            Dict.get "West" directions
 
         east =
-            directions
-                |> List.filter
-                    (\x ->
-                        case x of
-                            East _ ->
-                                True
-
-                            _ ->
-                                False
-                    )
+            Dict.get "East" directions
 
         south =
-            directions
-                |> List.filter
-                    (\x ->
-                        case x of
-                            South _ ->
-                                True
-
-                            _ ->
-                                False
-                    )
+            Dict.get "South" directions
 
         buttonAttributes =
             [ padding 20 ]
@@ -107,16 +41,11 @@ view directions msg =
             [ centerY
             , width <| fillPortion 4
             ]
-            [ case List.head west of
-                Just direction ->
+            [ case west of
+                Just room ->
                     Input.button buttonAttributes
                         { onPress =
-                            case direction of
-                                West room ->
-                                    Just <| msg room
-
-                                _ ->
-                                    Nothing
+                            Just <| msg room
                         , label = text "West"
                         }
 
@@ -127,76 +56,51 @@ view directions msg =
             [ width <| fillPortion 4
             , spacing 20
             ]
-            [ case List.head enter of
-                Just direction ->
+            [ case enter of
+                Just room ->
                     Input.button buttonAttributes
                         { onPress =
-                            case direction of
-                                Enter room ->
-                                    Just <| msg room
-
-                                _ ->
-                                    Nothing
+                            Just <| msg room
                         , label = text "Enter"
                         }
 
                 Nothing ->
                     Element.none
-            , case List.head upstairs of
-                Just direction ->
+            , case upstairs of
+                Just room ->
                     Input.button buttonAttributes
                         { onPress =
-                            case direction of
-                                Upstairs room ->
-                                    Just <| msg room
-
-                                _ ->
-                                    Nothing
+                            Just <| msg room
                         , label = text "Upstairs"
                         }
 
                 Nothing ->
                     Element.none
-            , case List.head north of
-                Just direction ->
+            , case north of
+                Just room ->
                     Input.button buttonAttributes
                         { onPress =
-                            case direction of
-                                North room ->
-                                    Just <| msg room
-
-                                _ ->
-                                    Nothing
+                            Just <| msg room
                         , label = text "North"
                         }
 
                 Nothing ->
                     Element.none
-            , case List.head south of
-                Just direction ->
+            , case south of
+                Just room ->
                     Input.button buttonAttributes
                         { onPress =
-                            case direction of
-                                South room ->
-                                    Just <| msg room
-
-                                _ ->
-                                    Nothing
+                            Just <| msg room
                         , label = text "South"
                         }
 
                 Nothing ->
                     Element.none
-            , case List.head downstairs of
-                Just direction ->
+            , case downstairs of
+                Just room ->
                     Input.button buttonAttributes
                         { onPress =
-                            case direction of
-                                Downstairs room ->
-                                    Just <| msg room
-
-                                _ ->
-                                    Nothing
+                            Just <| msg room
                         , label = text "Downstairs"
                         }
 
@@ -207,16 +111,11 @@ view directions msg =
             [ centerY
             , width <| fillPortion 4
             ]
-            [ case List.head east of
-                Just direction ->
+            [ case east of
+                Just room ->
                     Input.button buttonAttributes
                         { onPress =
-                            case direction of
-                                East room ->
-                                    Just <| msg room
-
-                                _ ->
-                                    Nothing
+                            Just <| msg room
                         , label = text "East"
                         }
 

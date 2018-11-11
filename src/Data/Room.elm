@@ -1,4 +1,6 @@
-module Data.Room exposing (Direction(..), Room, roomInfo, startingRoom)
+module Data.Room exposing (Room, roomInfo, startingRoom)
+
+import Dict exposing (Dict)
 
 
 type Room
@@ -13,18 +15,8 @@ type alias RoomInfo =
     , surroundingsWhenItemPickedUp : Maybe String
     , surroundingsWhenItemUsed : Maybe String
     , item : Maybe String
-    , availableDirections : List Direction
+    , availableDirections : Dict String Room
     }
-
-
-type Direction
-    = Enter Room
-    | North Room
-    | East Room
-    | West Room
-    | South Room
-    | Upstairs Room
-    | Downstairs Room
 
 
 startingRoom : Room
@@ -43,8 +35,7 @@ roomInfo room =
             , surroundingsWhenItemUsed = Nothing
             , item = Nothing
             , availableDirections =
-                [ Enter Entrance
-                ]
+                Dict.fromList [ ( "Enter", Entrance ) ]
             }
 
         Entrance ->
@@ -55,8 +46,9 @@ roomInfo room =
             , surroundingsWhenItemUsed = Nothing
             , item = Nothing
             , availableDirections =
-                [ Upstairs Start -- "Upstairs Foyer"
-                , West Start -- "Dining Hall"
-                , East Start -- "Hallway One"
-                ]
+                Dict.fromList
+                    [ ( "Upstairs", Start ) -- "Upstairs Foyer"
+                    , ( "West", Start ) -- "Dining Hall"
+                    , ( "East", Start ) -- "Hallway One"
+                    ]
             }
