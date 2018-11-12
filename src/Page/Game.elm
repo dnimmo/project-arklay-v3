@@ -7,6 +7,7 @@ import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
 import Page.Game.DirectionControls as DirectionControls
+import Page.Game.Surroundings as Surroundings
 import View.Layout exposing (mainLayout)
 
 
@@ -111,10 +112,21 @@ inventoryView inventory =
 
 
 view : Model -> Element Msg
-view { room, inventory, displayInventory, messageDisplayed } =
+view model =
     let
-        { intro, surroundings, item, availableDirections } =
+        { room, inventory, itemsUsed, displayInventory, messageDisplayed } =
+            model
+
+        { intro, surroundings, item, availableDirections, surroundingsWhenItemPickedUp } =
             roomInfo room
+
+        roomHasItem =
+            case item of
+                Just _ ->
+                    True
+
+                Nothing ->
+                    False
 
         playerHasItems =
             case List.head inventory of
@@ -130,7 +142,8 @@ view { room, inventory, displayInventory, messageDisplayed } =
             [ paragraph [] [ text intro ] ]
         , row
             [ width fill ]
-            [ paragraph [] [ text surroundings ] ]
+            [ Surroundings.view roomHasItem { inventory = inventory, itemsUsed = itemsUsed, room = room }
+            ]
         , row
             [ Border.solid
             , Border.width 1
