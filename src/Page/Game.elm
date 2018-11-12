@@ -78,7 +78,7 @@ update msg model =
 -- VIEW
 
 
-inventoryView : List Item -> List (Element msg)
+inventoryView : List Item -> List (Element Msg)
 inventoryView inventory =
     List.map (\x -> itemInfo x |> .name |> text) inventory
 
