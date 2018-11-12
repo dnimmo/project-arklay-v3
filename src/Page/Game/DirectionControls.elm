@@ -1,37 +1,9 @@
 module Page.Game.DirectionControls exposing (view)
 
-import Data.Room exposing (Room)
+import Data.Room exposing (Room, enterKey, upstairsKey, downstairsKey, northKey, westKey, eastKey, southKey)
 import Dict exposing (Dict)
 import Element exposing (Element, centerX, centerY, column, fillPortion, padding, row, spacing, text, width)
 import Element.Input as Input
-
-
-enterKey =
-    "Enter"
-
-
-upstairsKey =
-    "Upstairs"
-
-
-downstairsKey =
-    "Downstairs"
-
-
-northKey =
-    "North"
-
-
-westKey =
-    "West"
-
-
-eastKey =
-    "East"
-
-
-southKey =
-    "South"
 
 
 view : Dict String Room -> (Room -> msg) -> Element msg

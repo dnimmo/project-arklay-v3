@@ -1,4 +1,4 @@
-module Data.Room exposing (Room, roomInfo, startingRoom)
+module Data.Room exposing (Room, downstairsKey, eastKey, enterKey, northKey, roomInfo, southKey, startingRoom, upstairsKey, westKey)
 
 import Data.Item exposing (Item(..))
 import Dict exposing (Dict)
@@ -68,6 +68,34 @@ type alias RoomInfo =
     }
 
 
+enterKey =
+    "Enter"
+
+
+upstairsKey =
+    "Upstairs"
+
+
+downstairsKey =
+    "Downstairs"
+
+
+northKey =
+    "North"
+
+
+westKey =
+    "West"
+
+
+eastKey =
+    "East"
+
+
+southKey =
+    "South"
+
+
 startingRoom : Room
 startingRoom =
     Start
@@ -84,7 +112,7 @@ roomInfo room =
             , surroundingsWhenItemUsed = Nothing
             , item = Nothing
             , availableDirections =
-                Dict.fromList [ ( "Enter", Entrance ) ]
+                Dict.fromList [ ( enterKey, Entrance ) ]
             }
 
         Entrance ->
@@ -96,9 +124,9 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "Upstairs", UpstairsFoyer )
-                    , ( "West", DiningHall )
-                    , ( "East", HallwayOne )
+                    [ ( upstairsKey, UpstairsFoyer )
+                    , ( westKey, DiningHall )
+                    , ( eastKey, HallwayOne )
                     ]
             }
 
@@ -111,8 +139,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", UpstairsHallwayOne )
-                    , ( "Downstairs", Entrance )
+                    [ ( northKey, UpstairsHallwayOne )
+                    , ( downstairsKey, Entrance )
                     ]
             }
 
@@ -125,9 +153,9 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "West", UpstairsStudy )
-                    , ( "East", UpstairsThirdBedroom )
-                    , ( "South", UpstairsFoyer )
+                    [ ( westKey, UpstairsStudy )
+                    , ( eastKey, UpstairsThirdBedroom )
+                    , ( southKey, UpstairsFoyer )
                     ]
             }
 
@@ -140,9 +168,9 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", UpstairsHallwayTwo )
-                    , ( "West", UpstairsSecretRoomThree )
-                    , ( "East", UpstairsHallwayOne )
+                    [ ( northKey, UpstairsHallwayTwo )
+                    , ( westKey, UpstairsSecretRoomThree )
+                    , ( eastKey, UpstairsHallwayOne )
                     ]
             }
 
@@ -154,7 +182,7 @@ roomInfo room =
             , surroundingsWhenItemUsed = Nothing
             , item = Just LionCrest
             , availableDirections =
-                Dict.fromList [ ( "East", UpstairsStudy ) ]
+                Dict.fromList [ ( eastKey, UpstairsStudy ) ]
             }
 
         UpstairsStairwayThree ->
@@ -166,9 +194,9 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", UpstairsMasterBedroom )
-                    , ( "East", UpstairsHallwayTwo )
-                    , ( "Downstairs", StairwayThree )
+                    [ ( northKey, UpstairsMasterBedroom )
+                    , ( eastKey, UpstairsHallwayTwo )
+                    , ( downstairsKey, StairwayThree )
                     ]
             }
 
@@ -181,8 +209,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "West", UpstairsMasterEnSuite )
-                    , ( "South", UpstairsStairwayThree )
+                    [ ( westKey, UpstairsMasterEnSuite )
+                    , ( southKey, UpstairsStairwayThree )
                     ]
             }
 
@@ -195,7 +223,7 @@ roomInfo room =
             , item = Just WineBottle
             , availableDirections =
                 Dict.fromList
-                    [ ( "East", UpstairsMasterBedroom )
+                    [ ( eastKey, UpstairsMasterBedroom )
                     ]
             }
 
@@ -208,8 +236,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "West", UpstairsHallwayFour )
-                    , ( "Downstairs", StairwayTwo )
+                    [ ( westKey, UpstairsHallwayFour )
+                    , ( downstairsKey, StairwayTwo )
                     ]
             }
 
@@ -222,10 +250,10 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", UpstairsTrophyRoom )
-                    , ( "West", UpstairsStairwayThree )
-                    , ( "East", UpstairsArtGallery )
-                    , ( "South", UpstairsStudy )
+                    [ ( northKey, UpstairsTrophyRoom )
+                    , ( westKey, UpstairsStairwayThree )
+                    , ( eastKey, UpstairsArtGallery )
+                    , ( southKey, UpstairsStudy )
                     ]
             }
 
@@ -238,8 +266,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "West", UpstairsHallwayTwo )
-                    , ( "East", UpstairsHallwayThree )
+                    [ ( westKey, UpstairsHallwayTwo )
+                    , ( eastKey, UpstairsHallwayThree )
                     ]
             }
 
@@ -252,10 +280,10 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", UpstairsAquarium )
-                    , ( "West", UpstairsArtGallery )
-                    , ( "East", UpstairsHallwayFour )
-                    , ( "South", UpstairsLibrary )
+                    [ ( northKey, UpstairsAquarium )
+                    , ( westKey, UpstairsArtGallery )
+                    , ( eastKey, UpstairsHallwayFour )
+                    , ( southKey, UpstairsLibrary )
                     ]
             }
 
@@ -268,7 +296,7 @@ roomInfo room =
             , item = Just UtilityKey
             , availableDirections =
                 Dict.fromList
-                    [ ( "South", UpstairsHallwayThree )
+                    [ ( southKey, UpstairsHallwayThree )
                     ]
             }
 
@@ -281,7 +309,7 @@ roomInfo room =
             , item = Just SheetMusic
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", UpstairsHallwayThree )
+                    [ ( northKey, UpstairsHallwayThree )
                     ]
             }
 
@@ -294,9 +322,9 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "West", UpstairsHallwayThree )
-                    , ( "East", UpstairsStairwayTwo )
-                    , ( "South", UpstairsSecondBedroom )
+                    [ ( westKey, UpstairsHallwayThree )
+                    , ( eastKey, UpstairsStairwayTwo )
+                    , ( southKey, UpstairsSecondBedroom )
                     ]
             }
 
@@ -309,8 +337,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", UpstairsHallwayFour )
-                    , ( "South", UpstairsSecondBathroom )
+                    [ ( northKey, UpstairsHallwayFour )
+                    , ( southKey, UpstairsSecondBathroom )
                     ]
             }
 
@@ -323,8 +351,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", UpstairsSecondBedroom )
-                    , ( "West", UpstairsThirdBedroom )
+                    [ ( northKey, UpstairsSecondBedroom )
+                    , ( westKey, UpstairsThirdBedroom )
                     ]
             }
 
@@ -337,8 +365,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "West", UpstairsHallwayOne )
-                    , ( "East", UpstairsSecondBathroom )
+                    [ ( westKey, UpstairsHallwayOne )
+                    , ( eastKey, UpstairsSecondBathroom )
                     ]
             }
 
@@ -351,7 +379,7 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "South", UpstairsHallwayTwo )
+                    [ ( southKey, UpstairsHallwayTwo )
                     ]
             }
 
@@ -364,8 +392,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", HallwayTwo )
-                    , ( "East", Entrance )
+                    [ ( northKey, HallwayTwo )
+                    , ( eastKey, Entrance )
                     ]
             }
 
@@ -378,8 +406,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", StatueRoom )
-                    , ( "West", Entrance )
+                    [ ( northKey, StatueRoom )
+                    , ( westKey, Entrance )
                     ]
             }
 
@@ -392,10 +420,10 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", Kitchen )
-                    , ( "West", HallwayFour )
-                    , ( "East", UtilityRoom )
-                    , ( "South", DiningHall )
+                    [ ( northKey, Kitchen )
+                    , ( westKey, HallwayFour )
+                    , ( eastKey, UtilityRoom )
+                    , ( southKey, DiningHall )
                     ]
             }
 
@@ -408,8 +436,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "West", HallwayTwo )
-                    , ( "Downstairs", BasementStairway )
+                    [ ( westKey, HallwayTwo )
+                    , ( downstairsKey, BasementStairway )
                     ]
             }
 
@@ -422,9 +450,9 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", WasteDisposal )
-                    , ( "East", Freezer )
-                    , ( "South", HallwayTwo )
+                    [ ( northKey, WasteDisposal )
+                    , ( eastKey, Freezer )
+                    , ( southKey, HallwayTwo )
                     ]
             }
 
@@ -437,7 +465,7 @@ roomInfo room =
             , item = Just MooseHead
             , availableDirections =
                 Dict.fromList
-                    [ ( "West", Kitchen )
+                    [ ( westKey, Kitchen )
                     ]
             }
 
@@ -451,7 +479,7 @@ roomInfo room =
             , availableDirections =
                 Dict.fromList
                     [ ( "Jump in", BasementWasteDisposal )
-                    , ( "South", Kitchen )
+                    , ( southKey, Kitchen )
                     ]
             }
 
@@ -464,9 +492,9 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", StairwayThree )
-                    , ( "West", MusicRoom )
-                    , ( "East", HallwayTwo )
+                    [ ( northKey, StairwayThree )
+                    , ( westKey, MusicRoom )
+                    , ( eastKey, HallwayTwo )
                     ]
             }
 
@@ -479,8 +507,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "Upstairs", UpstairsStairwayThree )
-                    , ( "South", HallwayFour )
+                    [ ( upstairsKey, UpstairsStairwayThree )
+                    , ( southKey, HallwayFour )
                     ]
             }
 
@@ -493,9 +521,9 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", HallwayFive )
-                    , ( "East", HallwayFour )
-                    , ( "South", SecretRoomOne )
+                    [ ( northKey, HallwayFive )
+                    , ( eastKey, HallwayFour )
+                    , ( southKey, SecretRoomOne )
                     ]
             }
 
@@ -508,8 +536,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", Gym )
-                    , ( "South", MusicRoom )
+                    [ ( northKey, Gym )
+                    , ( southKey, MusicRoom )
                     ]
             }
 
@@ -522,8 +550,8 @@ roomInfo room =
             , item = Just Keycode
             , availableDirections =
                 Dict.fromList
-                    [ ( "East", SwimmingPool )
-                    , ( "South", HallwayFive )
+                    [ ( eastKey, SwimmingPool )
+                    , ( southKey, HallwayFive )
                     ]
             }
 
@@ -536,8 +564,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "West", Gym )
-                    , ( "East", Showers )
+                    [ ( westKey, Gym )
+                    , ( eastKey, Showers )
                     ]
             }
 
@@ -550,7 +578,7 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "West", SwimmingPool )
+                    [ ( westKey, SwimmingPool )
                     ]
             }
 
@@ -563,7 +591,7 @@ roomInfo room =
             , item = Just EagleCrest
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", MusicRoom )
+                    [ ( northKey, MusicRoom )
                     ]
             }
 
@@ -576,9 +604,9 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", SecretRoomTwo )
-                    , ( "East", HallwayThree )
-                    , ( "South", HallwayOne )
+                    [ ( northKey, SecretRoomTwo )
+                    , ( eastKey, HallwayThree )
+                    , ( southKey, HallwayOne )
                     ]
             }
 
@@ -591,7 +619,7 @@ roomInfo room =
             , item = Just WolfCrest
             , availableDirections =
                 Dict.fromList
-                    [ ( "South", StatueRoom )
+                    [ ( southKey, StatueRoom )
                     ]
             }
 
@@ -604,10 +632,10 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", ServantsQuarters )
-                    , ( "West", StatueRoom )
-                    , ( "East", StairwayTwo )
-                    , ( "South", Garage )
+                    [ ( northKey, ServantsQuarters )
+                    , ( westKey, StatueRoom )
+                    , ( eastKey, StairwayTwo )
+                    , ( southKey, Garage )
                     ]
             }
 
@@ -620,7 +648,7 @@ roomInfo room =
             , item = Just Crowbar
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", HallwayThree )
+                    [ ( northKey, HallwayThree )
                     ]
             }
 
@@ -633,8 +661,8 @@ roomInfo room =
             , item = Just StatueHead
             , availableDirections =
                 Dict.fromList
-                    [ ( "West", ServantsBathroom )
-                    , ( "South", HallwayThree )
+                    [ ( westKey, ServantsBathroom )
+                    , ( southKey, HallwayThree )
                     ]
             }
 
@@ -647,7 +675,7 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "East", ServantsQuarters )
+                    [ ( eastKey, ServantsQuarters )
                     ]
             }
 
@@ -660,8 +688,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "Upstairs", UpstairsStairwayTwo )
-                    , ( "West", HallwayThree )
+                    [ ( upstairsKey, UpstairsStairwayTwo )
+                    , ( westKey, HallwayThree )
                     ]
             }
 
@@ -674,10 +702,10 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "Upstairs", UtilityRoom )
-                    , ( "West", BasementStorage )
-                    , ( "East", BasementStorageTwo )
-                    , ( "South", BasementWineCellar )
+                    [ ( upstairsKey, UtilityRoom )
+                    , ( westKey, BasementStorage )
+                    , ( eastKey, BasementStorageTwo )
+                    , ( southKey, BasementWineCellar )
                     ]
             }
 
@@ -690,7 +718,7 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "East", BasementStairway )
+                    [ ( eastKey, BasementStairway )
                     ]
             }
 
@@ -703,7 +731,7 @@ roomInfo room =
             , item = Just Handle
             , availableDirections =
                 Dict.fromList
-                    [ ( "West", BasementStairway )
+                    [ ( westKey, BasementStairway )
                     ]
             }
 
@@ -716,7 +744,7 @@ roomInfo room =
             , item = Just SmallKey
             , availableDirections =
                 Dict.fromList
-                    [ ( "South", BasementStorage )
+                    [ ( southKey, BasementStorage )
                     ]
             }
 
@@ -729,7 +757,7 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "East", BasementItemRoom )
+                    [ ( eastKey, BasementItemRoom )
                     ]
             }
 
@@ -742,8 +770,8 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "North", BasementStairway )
-                    , ( "West", BasementLabEntrance )
+                    [ ( northKey, BasementStairway )
+                    , ( westKey, BasementLabEntrance )
                     ]
             }
 
