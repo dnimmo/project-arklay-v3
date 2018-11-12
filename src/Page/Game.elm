@@ -17,7 +17,9 @@ import View.Layout exposing (mainLayout)
 type alias Model =
     { room : Room
     , inventory : List Item
+    , itemsUsed : List Item
     , displayInventory : Bool
+    , messageDisplayed : Maybe String
     }
 
 
@@ -25,7 +27,9 @@ initialModel : Model
 initialModel =
     { room = Room.startingRoom
     , inventory = []
+    , itemsUsed = []
     , displayInventory = False
+    , messageDisplayed = Nothing
     }
 
 
@@ -46,6 +50,7 @@ update msg model =
         ToggleInventory ->
             ( { model
                 | displayInventory = not model.displayInventory
+                , messageDisplayed = Nothing
               }
             , Cmd.none
             )
@@ -53,6 +58,7 @@ update msg model =
         ChangeRoom room ->
             ( { model
                 | room = room
+                , messageDisplayed = Nothing
               }
             , Cmd.none
             )
@@ -62,10 +68,31 @@ update msg model =
                 | inventory =
                     case item of
                         Just x ->
-                            x :: model.inventory
+                            if
+                                List.member x model.inventory
+                                    || List.member x model.itemsUsed
+                            then
+                                model.inventory
+
+                            else
+                                List.reverse <| x :: model.inventory
 
                         Nothing ->
                             model.inventory
+                , messageDisplayed =
+                    case item of
+                        Just x ->
+                            if
+                                List.member x model.inventory
+                                    || List.member x model.itemsUsed
+                            then
+                                Just <| "This is where I found the " ++ (itemInfo x).name
+
+                            else
+                                Just <| (itemInfo x).name ++ " has been added to your inventory"
+
+                        Nothing ->
+                            Just "Hm, nothing interesting here"
               }
             , Cmd.none
             )
@@ -84,7 +111,7 @@ inventoryView inventory =
 
 
 view : Model -> Element Msg
-view { room, inventory, displayInventory } =
+view { room, inventory, displayInventory, messageDisplayed } =
     let
         { intro, surroundings, item, availableDirections } =
             roomInfo room
@@ -118,13 +145,7 @@ view { room, inventory, displayInventory } =
           else
             column
                 [ centerX
-                , Font.color <|
-                    case playerHasItems of
-                        True ->
-                            rgb255 250 250 250
-
-                        False ->
-                            rgb255 100 100 100
+                , Font.color <| rgb255 250 250 250
                 ]
                 [ case displayInventory of
                     True ->
@@ -132,7 +153,15 @@ view { room, inventory, displayInventory } =
                             inventoryView inventory
 
                     False ->
-                        column []
+                        column
+                            [ Font.color <|
+                                case playerHasItems of
+                                    True ->
+                                        rgb255 250 250 250
+
+                                    False ->
+                                        rgb255 100 100 100
+                            ]
                             [ Input.button [ width fill ]
                                 { onPress =
                                     case playerHasItems of
@@ -152,10 +181,16 @@ view { room, inventory, displayInventory } =
                             }
 
                     False ->
-                        Input.button [ Font.color <| rgb255 250 250 250 ]
+                        Input.button []
                             { onPress =
                                 Just <| ExamineRoom item
                             , label = text "Examine room"
                             }
+                , case messageDisplayed of
+                    Just message ->
+                        paragraph [] [ text message ]
+
+                    Nothing ->
+                        Element.none
                 ]
         ]
