@@ -37,9 +37,9 @@ view roomHasItem { room, inventory, itemsUsed } =
             case itemsThatCanBeUsed room of
                 Just items ->
                     case surroundingsWhenItemUsed of
-                        Just updatedSurroundings ->
+                        Just itemUsedSurroundings ->
                             if List.any (\x -> List.member x itemsUsed) itemsUsed then
-                                updatedSurroundings
+                                itemUsedSurroundings
 
                             else
                                 surroundings
@@ -50,8 +50,8 @@ view roomHasItem { room, inventory, itemsUsed } =
                 Nothing ->
                     if roomHasItem && itemHasBeenPickedUp item inventory itemsUsed then
                         case surroundingsWhenItemPickedUp of
-                            Just updatedSurroundings ->
-                                updatedSurroundings
+                            Just itemPickedUpSurroundings ->
+                                itemPickedUpSurroundings
 
                             Nothing ->
                                 surroundings

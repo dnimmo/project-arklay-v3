@@ -549,7 +549,7 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "Jump in", BasementWasteDisposal )
+                    [ ( enterKey, BasementWasteDisposal )
                     , ( southKey, Kitchen )
                     ]
             }

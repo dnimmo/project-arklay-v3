@@ -1,6 +1,6 @@
 module Page.Game exposing (Model, Msg, initialModel, update, view)
 
-import Data.Item exposing (Item(..), itemInfo)
+import Data.Item exposing (Item, itemInfo)
 import Data.Room as Room exposing (Room, itemsThatCanBeUsed, roomInfo)
 import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, minimum, padding, paragraph, rgb255, row, spacing, text, width)
 import Element.Border as Border
