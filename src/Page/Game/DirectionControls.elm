@@ -1,9 +1,23 @@
 module Page.Game.DirectionControls exposing (view)
 
-import Data.Room exposing (Room, enterKey, upstairsKey, downstairsKey, northKey, westKey, eastKey, southKey)
+import Data.Room exposing (Room, downstairsKey, eastKey, enterKey, northKey, southKey, upstairsKey, westKey)
 import Dict exposing (Dict)
-import Element exposing (Element, centerX, centerY, column, fillPortion, padding, row, spacing, text, width)
+import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, minimum, padding, paragraph, row, spacing, text, width)
 import Element.Input as Input
+
+
+buttonAttributes =
+    [ padding 20
+    , centerY
+    , width fill
+    ]
+
+
+columnAttributes =
+    [ centerY
+    , width <| fillPortion 3
+    , height (fill |> minimum 200)
+    ]
 
 
 view : Dict String Room -> (Room -> msg) -> Element msg
@@ -29,18 +43,14 @@ view directions msg =
 
         south =
             Dict.get southKey directions
-
-        buttonAttributes =
-            [ padding 20 ]
     in
     row
         [ centerX
         , spacing 20
+        , width fill
         ]
         [ column
-            [ centerY
-            , width <| fillPortion 4
-            ]
+            columnAttributes
             [ case west of
                 Just room ->
                     Input.button buttonAttributes
@@ -53,9 +63,7 @@ view directions msg =
                     Element.none
             ]
         , column
-            [ width <| fillPortion 4
-            , spacing 20
-            ]
+            columnAttributes
             [ case enter of
                 Just room ->
                     Input.button buttonAttributes
@@ -108,9 +116,7 @@ view directions msg =
                     Element.none
             ]
         , column
-            [ centerY
-            , width <| fillPortion 4
-            ]
+            columnAttributes
             [ case east of
                 Just room ->
                     Input.button buttonAttributes

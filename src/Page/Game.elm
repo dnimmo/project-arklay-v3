@@ -1,8 +1,8 @@
 module Page.Game exposing (Model, Msg, initialModel, update, view)
 
-import Data.Item exposing (Item, itemInfo)
+import Data.Item exposing (Item(..), itemInfo)
 import Data.Room as Room exposing (Room(..), roomInfo)
-import Element exposing (Element, centerX, centerY, column, fill, fillPortion, padding, paragraph, rgb255, row, spacing, text, width, wrappedRow)
+import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, minimum, padding, paragraph, rgb255, row, spacing, text, width)
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
@@ -27,7 +27,7 @@ type alias Model =
 initialModel : Model
 initialModel =
     { room = Room.startingRoom
-    , inventory = []
+    , inventory = [ Crowbar, MooseHead ]
     , itemsUsed = []
     , displayInventory = False
     , messageDisplayed = Nothing
@@ -108,7 +108,13 @@ update msg model =
 
 inventoryView : List Item -> List (Element Msg)
 inventoryView inventory =
-    List.map (\x -> itemInfo x |> .name |> text) inventory
+    List.map
+        (\x ->
+            itemInfo x
+                |> .name
+                |> (\str -> paragraph [ centerX ] [ text str ])
+        )
+        inventory
 
 
 view : Model -> Element Msg
@@ -137,12 +143,17 @@ view model =
                     False
     in
     mainLayout
-        [ row
-            [ width fill ]
-            [ paragraph [] [ text intro ] ]
-        , row
-            [ width fill ]
-            [ Surroundings.view roomHasItem { inventory = inventory, itemsUsed = itemsUsed, room = room }
+        [ column
+            [ height (fill |> minimum 150)
+            , width fill
+            ]
+            [ row
+                [ width fill ]
+                [ paragraph [] [ text intro ] ]
+            , row
+                [ width fill ]
+                [ Surroundings.view roomHasItem { inventory = inventory, itemsUsed = itemsUsed, room = room }
+                ]
             ]
         , row
             [ Border.solid
@@ -151,19 +162,32 @@ view model =
             , width fill
             ]
             [ Element.none ]
-        , DirectionControls.view availableDirections ChangeRoom
+        , case displayInventory of
+            False ->
+                DirectionControls.view availableDirections ChangeRoom
+
+            True ->
+                column
+                    [ spacing 20
+                    , width fill
+                    , height (fill |> minimum 200)
+                    ]
+                <|
+                    inventoryView inventory
         , if (roomInfo room).name == "Start" then
             Element.none
 
           else
             column
-                [ centerX
-                , Font.color <| rgb255 250 250 250
+                [ Font.color <| rgb255 250 250 250
+                , padding 50
+                , spacing 20
+                , width fill
+                , height (fill |> minimum 200)
                 ]
                 [ case displayInventory of
                     True ->
-                        column [] <|
-                            inventoryView inventory
+                        Element.none
 
                     False ->
                         column
@@ -174,6 +198,8 @@ view model =
 
                                     False ->
                                         rgb255 100 100 100
+                            , spacing 20
+                            , width fill
                             ]
                             [ Input.button [ width fill ]
                                 { onPress =
@@ -183,27 +209,31 @@ view model =
 
                                         False ->
                                             Nothing
-                                , label = text "Inventory"
+                                , label = paragraph [] [ text "Inventory" ]
                                 }
                             ]
                 , case displayInventory of
                     True ->
-                        Input.button []
+                        Input.button [ width fill ]
                             { onPress = Just ToggleInventory
                             , label = text "Close inventory"
                             }
 
                     False ->
-                        Input.button []
+                        Input.button [ width fill ]
                             { onPress =
                                 Just <| ExamineRoom item
                             , label = text "Examine room"
                             }
-                , case messageDisplayed of
-                    Just message ->
-                        paragraph [] [ text message ]
+                , paragraph
+                    [ height (fill |> minimum 100)
+                    ]
+                    [ case messageDisplayed of
+                        Just message ->
+                            text message
 
-                    Nothing ->
-                        Element.none
+                        Nothing ->
+                            Element.none
+                    ]
                 ]
         ]

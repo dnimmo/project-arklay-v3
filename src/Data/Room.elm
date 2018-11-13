@@ -98,7 +98,8 @@ southKey =
 
 startingRoom : Room
 startingRoom =
-    Start
+    Entrance
+    -- Start
 
 
 roomInfo : Room -> RoomInfo
