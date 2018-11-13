@@ -1,7 +1,7 @@
 module Page.Game.Surroundings exposing (view)
 
 import Data.Item exposing (Item)
-import Data.Room exposing (Room, roomInfo)
+import Data.Room exposing (Room, itemsThatCanBeUsed, roomInfo)
 import Element exposing (Element, paragraph, text)
 
 
@@ -29,19 +29,33 @@ itemHasBeenPickedUp item inventory itemsUsed =
 view : Bool -> SurroundingsRequirements -> Element msg
 view roomHasItem { room, inventory, itemsUsed } =
     let
-        { surroundings, surroundingsWhenItemPickedUp, item } =
+        { surroundings, surroundingsWhenItemPickedUp, surroundingsWhenItemUsed, item } =
             roomInfo room
     in
     paragraph []
         [ text <|
-            if roomHasItem && itemHasBeenPickedUp item inventory itemsUsed then
-                case surroundingsWhenItemPickedUp of
-                    Just updatedSurroundings ->
-                        updatedSurroundings
+            case itemsThatCanBeUsed room of
+                Just items ->
+                    case surroundingsWhenItemUsed of
+                        Just updatedSurroundings ->
+                            if List.any (\x -> List.member x itemsUsed) itemsUsed then
+                                updatedSurroundings
 
-                    Nothing ->
+                            else
+                                surroundings
+
+                        Nothing ->
+                            surroundings
+
+                Nothing ->
+                    if roomHasItem && itemHasBeenPickedUp item inventory itemsUsed then
+                        case surroundingsWhenItemPickedUp of
+                            Just updatedSurroundings ->
+                                updatedSurroundings
+
+                            Nothing ->
+                                surroundings
+
+                    else
                         surroundings
-
-            else
-                surroundings
         ]
