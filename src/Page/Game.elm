@@ -16,20 +16,25 @@ import View.Layout exposing (mainLayout)
 
 
 type alias Model =
-    { room : Room
+    { state : State
+    , room : Room
     , inventory : List Item
     , itemsUsed : List Item
-    , displayInventory : Bool
     , messageDisplayed : Maybe String
     }
 
 
+type State
+    = DisplayingDirections
+    | DisplayingInventory
+
+
 initialModel : Model
 initialModel =
-    { room = Room.startingRoom
+    { state = DisplayingDirections
+    , room = Room.startingRoom
     , inventory = []
     , itemsUsed = []
-    , displayInventory = False
     , messageDisplayed = Nothing
     }
 
@@ -50,7 +55,13 @@ update msg model =
     case msg of
         ToggleInventory ->
             ( { model
-                | displayInventory = not model.displayInventory
+                | state =
+                    case model.state of
+                        DisplayingDirections ->
+                            DisplayingInventory
+
+                        DisplayingInventory ->
+                            DisplayingDirections
                 , messageDisplayed = Nothing
               }
             , Cmd.none
@@ -120,7 +131,7 @@ inventoryView inventory =
 view : Model -> Element Msg
 view model =
     let
-        { room, inventory, itemsUsed, displayInventory, messageDisplayed } =
+        { room, inventory, itemsUsed, state, messageDisplayed } =
             model
 
         { intro, surroundings, item, availableDirections, surroundingsWhenItemPickedUp } =
@@ -162,11 +173,11 @@ view model =
             , width fill
             ]
             [ Element.none ]
-        , case displayInventory of
-            False ->
+        , case state of
+            DisplayingDirections ->
                 DirectionControls.view availableDirections ChangeRoom
 
-            True ->
+            DisplayingInventory ->
                 column
                     [ spacing 20
                     , width fill
@@ -185,11 +196,11 @@ view model =
                 , width fill
                 , height (fill |> minimum 200)
                 ]
-                [ case displayInventory of
-                    True ->
+                [ case state of
+                    DisplayingInventory ->
                         Element.none
 
-                    False ->
+                    DisplayingDirections ->
                         column
                             [ Font.color <|
                                 case playerHasItems of
@@ -212,14 +223,14 @@ view model =
                                 , label = paragraph [] [ text "Inventory" ]
                                 }
                             ]
-                , case displayInventory of
-                    True ->
+                , case state of
+                    DisplayingInventory ->
                         Input.button [ width fill ]
                             { onPress = Just ToggleInventory
                             , label = text "Close inventory"
                             }
 
-                    False ->
+                    DisplayingDirections ->
                         Input.button [ width fill ]
                             { onPress =
                                 Just <| ExamineRoom item
