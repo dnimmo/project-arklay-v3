@@ -1,7 +1,7 @@
 module Page.Game exposing (Model, Msg, initialModel, update, view)
 
-import Data.Item exposing (Item, itemInfo)
-import Data.Room as Room exposing (Room(..), roomInfo)
+import Data.Item exposing (Item(..), itemInfo)
+import Data.Room as Room exposing (Room, roomInfo)
 import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, minimum, padding, paragraph, rgb255, row, spacing, text, width)
 import Element.Border as Border
 import Element.Font as Font
@@ -175,7 +175,7 @@ view model =
             [ Element.none ]
         , case state of
             DisplayingDirections ->
-                DirectionControls.view availableDirections ChangeRoom
+                DirectionControls.view availableDirections ChangeRoom itemsUsed
 
             DisplayingInventory ->
                 column

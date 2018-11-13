@@ -1,15 +1,25 @@
 module Page.Game.DirectionControls exposing (view)
 
-import Data.Room exposing (Room, downstairsKey, eastKey, enterKey, northKey, southKey, upstairsKey, westKey)
+import Data.Item exposing (Item)
+import Data.Room exposing (Room, downstairsKey, eastKey, enterKey, northKey, roomInfo, southKey, upstairsKey, westKey)
 import Dict exposing (Dict)
-import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, minimum, padding, paragraph, row, spacing, text, width)
+import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, minimum, padding, paragraph, rgb255, row, spacing, text, width)
+import Element.Font as Font
 import Element.Input as Input
 
 
-buttonAttributes =
+buttonAttributes : Bool -> List (Element.Attribute msg)
+buttonAttributes isUnlocked =
     [ padding 20
     , centerY
     , width fill
+    , Font.color <|
+        case isUnlocked of
+            True ->
+                rgb255 250 250 250
+
+            False ->
+                rgb255 100 100 100
     ]
 
 
@@ -20,8 +30,39 @@ columnAttributes =
     ]
 
 
-view : Dict String Room -> (Room -> msg) -> Element msg
-view directions msg =
+roomButton : Maybe Room -> (Room -> msg) -> String -> List Item -> Element msg
+roomButton maybeRoom msg buttonLabel itemsUsed =
+    case maybeRoom of
+        Just room ->
+            let
+                roomIsUnlocked =
+                    case roomInfo room |> .unlockRequirements of
+                        Just itemsNeededToUnlockRoom ->
+                            List.length itemsUsed
+                                > 0
+                                && List.all (\x -> List.member x itemsUsed) itemsNeededToUnlockRoom
+
+                        Nothing ->
+                            True
+            in
+            Input.button
+                (buttonAttributes roomIsUnlocked)
+                { onPress =
+                    case roomIsUnlocked of
+                        True ->
+                            Just <| msg room
+
+                        False ->
+                            Nothing
+                , label = text buttonLabel
+                }
+
+        Nothing ->
+            Element.none
+
+
+view : Dict String Room -> (Room -> msg) -> List Item -> Element msg
+view directions msg itemsUsed =
     let
         enter =
             Dict.get enterKey directions
@@ -50,82 +91,50 @@ view directions msg =
         , width fill
         ]
         [ column
-            columnAttributes
-            [ case west of
-                Just room ->
-                    Input.button buttonAttributes
-                        { onPress =
-                            Just <| msg room
-                        , label = text westKey
-                        }
-
-                Nothing ->
-                    Element.none
+            (Font.alignRight :: columnAttributes)
+          <|
+            [ roomButton
+                west
+                msg
+                westKey
+                itemsUsed
             ]
         , column
             columnAttributes
-            [ case enter of
-                Just room ->
-                    Input.button buttonAttributes
-                        { onPress =
-                            Just <| msg room
-                        , label = text enterKey
-                        }
-
-                Nothing ->
-                    Element.none
-            , case upstairs of
-                Just room ->
-                    Input.button buttonAttributes
-                        { onPress =
-                            Just <| msg room
-                        , label = text upstairsKey
-                        }
-
-                Nothing ->
-                    Element.none
-            , case north of
-                Just room ->
-                    Input.button buttonAttributes
-                        { onPress =
-                            Just <| msg room
-                        , label = text northKey
-                        }
-
-                Nothing ->
-                    Element.none
-            , case south of
-                Just room ->
-                    Input.button buttonAttributes
-                        { onPress =
-                            Just <| msg room
-                        , label = text southKey
-                        }
-
-                Nothing ->
-                    Element.none
-            , case downstairs of
-                Just room ->
-                    Input.button buttonAttributes
-                        { onPress =
-                            Just <| msg room
-                        , label = text downstairsKey
-                        }
-
-                Nothing ->
-                    Element.none
+            [ roomButton
+                enter
+                msg
+                enterKey
+                itemsUsed
+            , roomButton
+                upstairs
+                msg
+                upstairsKey
+                itemsUsed
+            , roomButton
+                north
+                msg
+                northKey
+                itemsUsed
+            , roomButton
+                south
+                msg
+                southKey
+                itemsUsed
+            , roomButton
+                downstairs
+                msg
+                downstairsKey
+                itemsUsed
             ]
         , column
-            columnAttributes
-            [ case east of
-                Just room ->
-                    Input.button buttonAttributes
-                        { onPress =
-                            Just <| msg room
-                        , label = text eastKey
-                        }
-
-                Nothing ->
-                    Element.none
+            (Font.alignLeft
+                :: columnAttributes
+            )
+            [ roomButton
+                east
+                msg
+                eastKey
+                itemsUsed
             ]
         ]

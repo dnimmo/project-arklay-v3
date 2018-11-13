@@ -14,13 +14,13 @@ mainLayout children =
         [ spacing 20
         , width fill
         ]
-        [ emptyColumn 2
-        , column
-            [ width <| fillPortion 6
+        [ emptyColumn 1
+                , column
+            [ width <| fillPortion 8
             , padding 60
             , spacing 20
             ]
           <|
             children
-        , emptyColumn 2
+        , emptyColumn 1
         ]
