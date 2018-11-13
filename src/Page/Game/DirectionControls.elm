@@ -1,7 +1,7 @@
 module Page.Game.DirectionControls exposing (view)
 
 import Data.Item exposing (Item)
-import Data.Room exposing (Room, downstairsKey, eastKey, enterKey, northKey, roomInfo, southKey, upstairsKey, westKey)
+import Data.Room exposing (Room, downstairsKey, eastKey, enterKey, northKey, roomInfo, southKey, unlockRequirements, upstairsKey, westKey)
 import Dict exposing (Dict)
 import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, minimum, padding, paragraph, rgb255, row, spacing, text, width)
 import Element.Font as Font
@@ -36,7 +36,7 @@ roomButton maybeRoom msg buttonLabel itemsUsed =
         Just room ->
             let
                 roomIsUnlocked =
-                    case roomInfo room |> .unlockRequirements of
+                    case unlockRequirements room of
                         Just itemsNeededToUnlockRoom ->
                             List.length itemsUsed
                                 > 0

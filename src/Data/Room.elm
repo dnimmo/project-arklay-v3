@@ -1,4 +1,4 @@
-module Data.Room exposing (Room(..), downstairsKey, eastKey, enterKey, northKey, roomInfo, southKey, startingRoom, upstairsKey, westKey, itemsThatCanBeUsed)
+module Data.Room exposing (Room(..), downstairsKey, eastKey, enterKey, itemsThatCanBeUsed, northKey, roomInfo, southKey, startingRoom, unlockRequirements, upstairsKey, westKey)
 
 import Data.Item exposing (Item(..))
 import Dict exposing (Dict)
@@ -65,8 +65,6 @@ type alias RoomInfo =
     , surroundingsWhenItemUsed : Maybe String
     , item : Maybe Item
     , availableDirections : Dict String Room
-    , unlockRequirements : Maybe (List Item)
-    , itemsThatCanBeUsed : Maybe (List Item)
     }
 
 
@@ -186,10 +184,6 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList [ ( enterKey, Entrance ) ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         Entrance ->
@@ -205,10 +199,6 @@ roomInfo room =
                     , ( westKey, DiningHall )
                     , ( eastKey, HallwayOne )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsFoyer ->
@@ -223,10 +213,6 @@ roomInfo room =
                     [ ( northKey, UpstairsHallwayOne )
                     , ( downstairsKey, Entrance )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsHallwayOne ->
@@ -242,10 +228,6 @@ roomInfo room =
                     , ( eastKey, UpstairsThirdBedroom )
                     , ( southKey, UpstairsFoyer )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsStudy ->
@@ -261,10 +243,6 @@ roomInfo room =
                     , ( westKey, UpstairsSecretRoomThree )
                     , ( eastKey, UpstairsHallwayOne )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsSecretRoomThree ->
@@ -276,10 +254,6 @@ roomInfo room =
             , item = Just LionCrest
             , availableDirections =
                 Dict.fromList [ ( eastKey, UpstairsStudy ) ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsStairwayThree ->
@@ -295,10 +269,6 @@ roomInfo room =
                     , ( eastKey, UpstairsHallwayTwo )
                     , ( downstairsKey, StairwayThree )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsMasterBedroom ->
@@ -313,10 +283,6 @@ roomInfo room =
                     [ ( westKey, UpstairsMasterEnSuite )
                     , ( southKey, UpstairsStairwayThree )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsMasterEnSuite ->
@@ -330,10 +296,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( eastKey, UpstairsMasterBedroom )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsStairwayTwo ->
@@ -348,10 +310,6 @@ roomInfo room =
                     [ ( westKey, UpstairsHallwayFour )
                     , ( downstairsKey, StairwayTwo )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsHallwayTwo ->
@@ -368,10 +326,6 @@ roomInfo room =
                     , ( eastKey, UpstairsArtGallery )
                     , ( southKey, UpstairsStudy )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsArtGallery ->
@@ -386,10 +340,6 @@ roomInfo room =
                     [ ( westKey, UpstairsHallwayTwo )
                     , ( eastKey, UpstairsHallwayThree )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsHallwayThree ->
@@ -406,10 +356,6 @@ roomInfo room =
                     , ( eastKey, UpstairsHallwayFour )
                     , ( southKey, UpstairsLibrary )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsAquarium ->
@@ -423,10 +369,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( southKey, UpstairsHallwayThree )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsLibrary ->
@@ -440,10 +382,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( northKey, UpstairsHallwayThree )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsHallwayFour ->
@@ -459,10 +397,6 @@ roomInfo room =
                     , ( eastKey, UpstairsStairwayTwo )
                     , ( southKey, UpstairsSecondBedroom )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsSecondBedroom ->
@@ -477,10 +411,6 @@ roomInfo room =
                     [ ( northKey, UpstairsHallwayFour )
                     , ( southKey, UpstairsSecondBathroom )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsSecondBathroom ->
@@ -495,10 +425,6 @@ roomInfo room =
                     [ ( northKey, UpstairsSecondBedroom )
                     , ( westKey, UpstairsThirdBedroom )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsThirdBedroom ->
@@ -513,10 +439,6 @@ roomInfo room =
                     [ ( westKey, UpstairsHallwayOne )
                     , ( eastKey, UpstairsSecondBathroom )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UpstairsTrophyRoom ->
@@ -530,10 +452,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( southKey, UpstairsHallwayTwo )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         DiningHall ->
@@ -548,10 +466,6 @@ roomInfo room =
                     [ ( northKey, HallwayTwo )
                     , ( eastKey, Entrance )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         HallwayOne ->
@@ -566,10 +480,6 @@ roomInfo room =
                     [ ( northKey, StatueRoom )
                     , ( westKey, Entrance )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         HallwayTwo ->
@@ -586,10 +496,6 @@ roomInfo room =
                     , ( eastKey, UtilityRoom )
                     , ( southKey, DiningHall )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         UtilityRoom ->
@@ -604,10 +510,6 @@ roomInfo room =
                     [ ( westKey, HallwayTwo )
                     , ( downstairsKey, BasementStairway )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         Kitchen ->
@@ -623,10 +525,6 @@ roomInfo room =
                     , ( eastKey, Freezer )
                     , ( southKey, HallwayTwo )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         Freezer ->
@@ -640,10 +538,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( westKey, Kitchen )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         WasteDisposal ->
@@ -658,10 +552,6 @@ roomInfo room =
                     [ ( "Jump in", BasementWasteDisposal )
                     , ( southKey, Kitchen )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         HallwayFour ->
@@ -677,10 +567,6 @@ roomInfo room =
                     , ( westKey, MusicRoom )
                     , ( eastKey, HallwayTwo )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         StairwayThree ->
@@ -695,10 +581,6 @@ roomInfo room =
                     [ ( upstairsKey, UpstairsStairwayThree )
                     , ( southKey, HallwayFour )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         MusicRoom ->
@@ -714,10 +596,6 @@ roomInfo room =
                     , ( eastKey, HallwayFour )
                     , ( southKey, SecretRoomOne )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         HallwayFive ->
@@ -732,10 +610,6 @@ roomInfo room =
                     [ ( northKey, Gym )
                     , ( southKey, MusicRoom )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         Gym ->
@@ -750,10 +624,6 @@ roomInfo room =
                     [ ( eastKey, SwimmingPool )
                     , ( southKey, HallwayFive )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         SwimmingPool ->
@@ -768,10 +638,6 @@ roomInfo room =
                     [ ( westKey, Gym )
                     , ( eastKey, Showers )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         Showers ->
@@ -785,10 +651,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( westKey, SwimmingPool )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         SecretRoomOne ->
@@ -802,10 +664,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( northKey, MusicRoom )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         StatueRoom ->
@@ -821,10 +679,6 @@ roomInfo room =
                     , ( eastKey, HallwayThree )
                     , ( southKey, HallwayOne )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         SecretRoomTwo ->
@@ -838,10 +692,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( southKey, StatueRoom )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         HallwayThree ->
@@ -858,10 +708,6 @@ roomInfo room =
                     , ( eastKey, StairwayTwo )
                     , ( southKey, Garage )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         Garage ->
@@ -875,10 +721,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( northKey, HallwayThree )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         ServantsQuarters ->
@@ -893,10 +735,6 @@ roomInfo room =
                     [ ( westKey, ServantsBathroom )
                     , ( southKey, HallwayThree )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         ServantsBathroom ->
@@ -910,10 +748,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( eastKey, ServantsQuarters )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         StairwayTwo ->
@@ -928,10 +762,6 @@ roomInfo room =
                     [ ( upstairsKey, UpstairsStairwayTwo )
                     , ( westKey, HallwayThree )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         BasementStairway ->
@@ -948,10 +778,6 @@ roomInfo room =
                     , ( eastKey, BasementStorageTwo )
                     , ( southKey, BasementWineCellar )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         BasementStorage ->
@@ -965,10 +791,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( eastKey, BasementStairway )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         BasementStorageTwo ->
@@ -982,10 +804,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( westKey, BasementStairway )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         BasementItemRoom ->
@@ -999,10 +817,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( southKey, BasementStorage )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         BasementWasteDisposal ->
@@ -1016,10 +830,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( eastKey, BasementItemRoom )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         BasementWineCellar ->
@@ -1034,10 +844,6 @@ roomInfo room =
                     [ ( northKey, BasementStairway )
                     , ( westKey, BasementLabEntrance )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         BasementLabEntrance ->
@@ -1051,10 +857,6 @@ roomInfo room =
                 Dict.fromList
                     [ ( "End Game", End )
                     ]
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
 
         End ->
@@ -1066,8 +868,4 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList []
-            , unlockRequirements =
-                unlockRequirements room
-            , itemsThatCanBeUsed =
-                itemsThatCanBeUsed room
             }
