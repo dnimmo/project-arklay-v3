@@ -1,4 +1,4 @@
-module Data.Room exposing (Room(..), downstairsKey, eastKey, enterKey, northKey, roomInfo, southKey, startingRoom, upstairsKey, westKey)
+module Data.Room exposing (Room(..), downstairsKey, eastKey, enterKey, northKey, roomInfo, southKey, startingRoom, upstairsKey, westKey, itemsThatCanBeUsed)
 
 import Data.Item exposing (Item(..))
 import Dict exposing (Dict)
@@ -66,6 +66,7 @@ type alias RoomInfo =
     , item : Maybe Item
     , availableDirections : Dict String Room
     , unlockRequirements : Maybe (List Item)
+    , itemsThatCanBeUsed : Maybe (List Item)
     }
 
 
@@ -97,6 +98,43 @@ unlockRequirements room =
             Just [ SmallKey ]
 
         BasementLabEntrance ->
+            Just [ WineBottle ]
+
+        _ ->
+            Nothing
+
+
+itemsThatCanBeUsed : Room -> Maybe (List Item)
+itemsThatCanBeUsed room =
+    case room of
+        UpstairsStudy ->
+            Just [ Keycode ]
+
+        UpstairsStairwayThree ->
+            Just [ LionCrest, EagleCrest, WolfCrest ]
+
+        UpstairsHallwayThree ->
+            Just [ Crowbar ]
+
+        HallwayTwo ->
+            Just [ UtilityKey ]
+
+        Freezer ->
+            Just [ MooseHead ]
+
+        WasteDisposal ->
+            Just [ Handle ]
+
+        MusicRoom ->
+            Just [ SheetMusic ]
+
+        StatueRoom ->
+            Just [ StatueHead ]
+
+        HallwayThree ->
+            Just [ SmallKey ]
+
+        BasementWineCellar ->
             Just [ WineBottle ]
 
         _ ->
@@ -150,6 +188,8 @@ roomInfo room =
                 Dict.fromList [ ( enterKey, Entrance ) ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         Entrance ->
@@ -167,6 +207,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsFoyer ->
@@ -183,6 +225,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsHallwayOne ->
@@ -200,6 +244,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsStudy ->
@@ -217,6 +263,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsSecretRoomThree ->
@@ -230,6 +278,8 @@ roomInfo room =
                 Dict.fromList [ ( eastKey, UpstairsStudy ) ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsStairwayThree ->
@@ -247,6 +297,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsMasterBedroom ->
@@ -263,6 +315,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsMasterEnSuite ->
@@ -278,6 +332,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsStairwayTwo ->
@@ -294,6 +350,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsHallwayTwo ->
@@ -312,6 +370,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsArtGallery ->
@@ -328,6 +388,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsHallwayThree ->
@@ -346,6 +408,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsAquarium ->
@@ -361,6 +425,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsLibrary ->
@@ -376,6 +442,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsHallwayFour ->
@@ -393,6 +461,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsSecondBedroom ->
@@ -409,6 +479,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsSecondBathroom ->
@@ -425,6 +497,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsThirdBedroom ->
@@ -441,6 +515,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UpstairsTrophyRoom ->
@@ -456,6 +532,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         DiningHall ->
@@ -472,6 +550,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         HallwayOne ->
@@ -488,6 +568,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         HallwayTwo ->
@@ -506,6 +588,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         UtilityRoom ->
@@ -522,6 +606,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         Kitchen ->
@@ -539,6 +625,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         Freezer ->
@@ -554,6 +642,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         WasteDisposal ->
@@ -570,6 +660,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         HallwayFour ->
@@ -587,6 +679,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         StairwayThree ->
@@ -603,6 +697,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         MusicRoom ->
@@ -620,6 +716,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         HallwayFive ->
@@ -636,6 +734,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         Gym ->
@@ -652,6 +752,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         SwimmingPool ->
@@ -668,6 +770,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         Showers ->
@@ -683,6 +787,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         SecretRoomOne ->
@@ -698,6 +804,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         StatueRoom ->
@@ -715,6 +823,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         SecretRoomTwo ->
@@ -730,6 +840,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         HallwayThree ->
@@ -748,6 +860,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         Garage ->
@@ -763,6 +877,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         ServantsQuarters ->
@@ -779,6 +895,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         ServantsBathroom ->
@@ -794,6 +912,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         StairwayTwo ->
@@ -810,6 +930,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         BasementStairway ->
@@ -828,6 +950,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         BasementStorage ->
@@ -843,6 +967,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         BasementStorageTwo ->
@@ -858,6 +984,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         BasementItemRoom ->
@@ -873,6 +1001,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         BasementWasteDisposal ->
@@ -888,6 +1018,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         BasementWineCellar ->
@@ -904,6 +1036,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         BasementLabEntrance ->
@@ -919,6 +1053,8 @@ roomInfo room =
                     ]
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }
 
         End ->
@@ -932,4 +1068,6 @@ roomInfo room =
                 Dict.fromList []
             , unlockRequirements =
                 unlockRequirements room
+            , itemsThatCanBeUsed =
+                itemsThatCanBeUsed room
             }

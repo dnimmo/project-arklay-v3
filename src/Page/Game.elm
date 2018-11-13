@@ -1,7 +1,7 @@
 module Page.Game exposing (Model, Msg, initialModel, update, view)
 
 import Data.Item exposing (Item(..), itemInfo)
-import Data.Room as Room exposing (Room, roomInfo)
+import Data.Room as Room exposing (Room, itemsThatCanBeUsed, roomInfo)
 import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, minimum, padding, paragraph, rgb255, row, spacing, text, width)
 import Element.Border as Border
 import Element.Font as Font
@@ -45,7 +45,7 @@ initialModel =
 
 type Msg
     = ToggleInventory
-    | UseItem
+    | UseItem Item Room
     | ChangeRoom Room
     | ExamineRoom (Maybe Item)
 
@@ -53,20 +53,6 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ToggleInventory ->
-            ( { model
-                | state =
-                    case model.state of
-                        DisplayingDirections ->
-                            DisplayingInventory
-
-                        DisplayingInventory ->
-                            DisplayingDirections
-                , messageDisplayed = Nothing
-              }
-            , Cmd.none
-            )
-
         ChangeRoom room ->
             ( { model
                 | room = room
@@ -109,21 +95,67 @@ update msg model =
             , Cmd.none
             )
 
-        _ ->
-            ( model, Cmd.none )
+        ToggleInventory ->
+            ( { model
+                | state =
+                    case model.state of
+                        DisplayingDirections ->
+                            DisplayingInventory
+
+                        DisplayingInventory ->
+                            DisplayingDirections
+                , messageDisplayed = Nothing
+              }
+            , Cmd.none
+            )
+
+        UseItem item room ->
+            let
+                itemCanBeUsed =
+                    case itemsThatCanBeUsed room of
+                        Just items ->
+                            items |> List.member item
+
+                        Nothing ->
+                            False
+
+                updatedModel =
+                    if itemCanBeUsed then
+                        { model
+                            | inventory =
+                                model.inventory
+                                    |> List.filter (\x -> x /= item)
+                            , itemsUsed = item :: model.itemsUsed
+                            , messageDisplayed = Just (itemInfo item |> .messageWhenUsed)
+                            , state = DisplayingDirections
+                        }
+
+                    else
+                        { model
+                            | messageDisplayed = Just (itemInfo item |> .messageWhenNotUsed)
+                        }
+            in
+            ( updatedModel
+            , Cmd.none
+            )
 
 
 
 -- VIEW
 
 
-inventoryView : List Item -> List (Element Msg)
-inventoryView inventory =
+inventoryView : List Item -> Room -> List (Element Msg)
+inventoryView inventory room =
     List.map
         (\x ->
-            itemInfo x
-                |> .name
-                |> (\str -> paragraph [ centerX ] [ text str ])
+            Input.button
+                [ width fill
+                , Font.center
+                ]
+                { onPress =
+                    Just <| UseItem x room
+                , label = text <| (itemInfo x).name
+                }
         )
         inventory
 
@@ -184,7 +216,7 @@ view model =
                     , height (fill |> minimum 200)
                     ]
                 <|
-                    inventoryView inventory
+                    inventoryView inventory room
         , if (roomInfo room).name == "Start" then
             Element.none
 
