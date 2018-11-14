@@ -13,6 +13,7 @@ buttonAttributes isUnlocked =
     [ padding 20
     , centerY
     , width fill
+    , height (fill |> minimum 35)
     , Font.color <|
         case isUnlocked of
             True ->
@@ -26,7 +27,7 @@ buttonAttributes isUnlocked =
 columnAttributes =
     [ centerY
     , width <| fillPortion 3
-    , height (fill |> minimum 200)
+    , height (fill |> minimum 100)
     ]
 
 
@@ -58,7 +59,7 @@ roomButton maybeRoom msg buttonLabel itemsUsed =
                 }
 
         Nothing ->
-            Element.none
+            paragraph [ height (fill |> minimum 50) ] [ Element.none ]
 
 
 view : Dict String Room -> (Room -> msg) -> List Item -> Element msg
@@ -102,11 +103,6 @@ view directions msg itemsUsed =
         , column
             columnAttributes
             [ roomButton
-                enter
-                msg
-                enterKey
-                itemsUsed
-            , roomButton
                 upstairs
                 msg
                 upstairsKey
@@ -115,6 +111,11 @@ view directions msg itemsUsed =
                 north
                 msg
                 northKey
+                itemsUsed
+            , roomButton
+                enter
+                msg
+                enterKey
                 itemsUsed
             , roomButton
                 south

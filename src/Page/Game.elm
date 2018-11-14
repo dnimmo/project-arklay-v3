@@ -187,7 +187,7 @@ view model =
     in
     mainLayout
         [ column
-            [ height (fill |> minimum 150)
+            [ height (fill |> minimum 100)
             , width fill
             ]
             [ row
@@ -213,7 +213,7 @@ view model =
                 column
                     [ spacing 20
                     , width fill
-                    , height (fill |> minimum 200)
+                    , height (fill |> minimum 100)
                     ]
                 <|
                     inventoryView inventory room
@@ -226,7 +226,7 @@ view model =
                 , padding 50
                 , spacing 20
                 , width fill
-                , height (fill |> minimum 200)
+                , height (fill |> minimum 400)
                 ]
                 [ case state of
                     DisplayingInventory ->
@@ -269,7 +269,7 @@ view model =
                             , label = text "Examine room"
                             }
                 , paragraph
-                    [ height (fill |> minimum 100)
+                    [ height (fill |> minimum 50)
                     ]
                     [ case messageDisplayed of
                         Just message ->
