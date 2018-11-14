@@ -117,7 +117,7 @@ itemsThatCanBeUsed room =
         HallwayTwo ->
             Just [ UtilityKey ]
 
-        Freezer ->
+        UpstairsTrophyRoom ->
             Just [ MooseHead ]
 
         WasteDisposal ->
