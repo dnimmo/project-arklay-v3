@@ -151,6 +151,7 @@ inventoryView inventory room =
             Input.button
                 [ width fill
                 , Font.center
+                , padding 20
                 ]
                 { onPress =
                     Just <| UseItem x room
@@ -223,7 +224,13 @@ view model =
           else
             column
                 [ Font.color <| rgb255 250 250 250
-                , padding 50
+                , padding <|
+                    case state of
+                        DisplayingInventory ->
+                            200
+
+                        DisplayingDirections ->
+                            50
                 , spacing 20
                 , width fill
                 , height (fill |> minimum 400)
