@@ -15,9 +15,8 @@ mainLayout children =
         , width fill
         ]
         [ emptyColumn 1
-                , column
+        , column
             [ width <| fillPortion 8
-            , padding 60
             , spacing 20
             ]
           <|

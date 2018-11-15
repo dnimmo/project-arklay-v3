@@ -2,7 +2,7 @@ module Page.Game exposing (Model, Msg, initialModel, update, view)
 
 import Data.Item exposing (Item, itemInfo)
 import Data.Room as Room exposing (Room, itemsThatCanBeUsed, roomInfo)
-import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, minimum, padding, paragraph, rgb255, row, spacing, text, width)
+import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, minimum, padding, paragraph, rgb255, row, text, width)
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
@@ -212,8 +212,7 @@ view model =
 
             DisplayingInventory ->
                 column
-                    [ spacing 20
-                    , width fill
+                    [ width fill
                     , height (fill |> minimum 100)
                     ]
                 <|
@@ -224,16 +223,9 @@ view model =
           else
             column
                 [ Font.color <| rgb255 250 250 250
-                , padding <|
-                    case state of
-                        DisplayingInventory ->
-                            200
-
-                        DisplayingDirections ->
-                            50
-                , spacing 20
+                , padding 50
                 , width fill
-                , height (fill |> minimum 400)
+                , height (fill |> minimum 100)
                 ]
                 [ case state of
                     DisplayingInventory ->
@@ -248,7 +240,6 @@ view model =
 
                                     False ->
                                         rgb255 100 100 100
-                            , spacing 20
                             , width fill
                             ]
                             [ Input.button [ width fill ]
