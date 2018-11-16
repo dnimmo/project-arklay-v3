@@ -50,19 +50,17 @@ type Msg
     | ExamineRoom (Maybe Item)
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> Model
 update msg model =
     case msg of
         ChangeRoom room ->
-            ( { model
+            { model
                 | room = room
                 , messageDisplayed = Nothing
-              }
-            , Cmd.none
-            )
+            }
 
         ExamineRoom item ->
-            ( { model
+            { model
                 | inventory =
                     case item of
                         Just x ->
@@ -91,12 +89,10 @@ update msg model =
 
                         Nothing ->
                             Just "Hm, nothing interesting here"
-              }
-            , Cmd.none
-            )
+            }
 
         ToggleInventory ->
-            ( { model
+            { model
                 | state =
                     case model.state of
                         DisplayingDirections ->
@@ -105,9 +101,7 @@ update msg model =
                         DisplayingInventory ->
                             DisplayingDirections
                 , messageDisplayed = Nothing
-              }
-            , Cmd.none
-            )
+            }
 
         UseItem item room ->
             let
@@ -135,9 +129,7 @@ update msg model =
                             | messageDisplayed = Just (itemInfo item |> .messageWhenNotUsed)
                         }
             in
-            ( updatedModel
-            , Cmd.none
-            )
+            updatedModel
 
 
 

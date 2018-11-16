@@ -92,17 +92,14 @@ update msg model =
             case model.state of
                 ViewGame gameModel ->
                     let
-                        ( updatedGameModel, command ) =
+                        updatedGameModel =
                             Game.update msgReceived gameModel
-
-                        mappedCommand =
-                            Cmd.map GameMsg command
                     in
                     ( { model
                         | state =
                             ViewGame updatedGameModel
                       }
-                    , mappedCommand
+                    , Cmd.none
                     )
 
                 _ ->
