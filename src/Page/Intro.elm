@@ -59,7 +59,7 @@ view navKey model =
             ]
         , row [ width fill ]
             [ Input.button
-                [ htmlAttribute <| id "button:start"
+                [ htmlAttribute <| id "button:Start"
                 , centerX
                 , padding 20
                 ]

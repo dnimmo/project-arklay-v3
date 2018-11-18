@@ -3,17 +3,19 @@ module Page.Game.DirectionControls exposing (view)
 import Data.Item exposing (Item)
 import Data.Room exposing (Room, downstairsKey, eastKey, enterKey, northKey, roomInfo, southKey, unlockRequirements, upstairsKey, westKey)
 import Dict exposing (Dict)
-import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, minimum, padding, paragraph, rgb255, row, spacing, text, width)
+import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, htmlAttribute, minimum, padding, paragraph, rgb255, row, spacing, text, width)
 import Element.Font as Font
 import Element.Input as Input
+import Html.Attributes exposing (id)
 
 
-buttonAttributes : Bool -> List (Element.Attribute msg)
-buttonAttributes isUnlocked =
+buttonAttributes : Bool -> String -> List (Element.Attribute msg)
+buttonAttributes isUnlocked buttonLabel =
     [ padding 20
     , centerY
     , width fill
     , height (fill |> minimum 35)
+    , htmlAttribute <| id <| "button:" ++ buttonLabel
     , Font.color <|
         case isUnlocked of
             True ->
@@ -47,7 +49,7 @@ roomButton maybeRoom msg buttonLabel itemsUsed =
                             True
             in
             Input.button
-                (buttonAttributes roomIsUnlocked)
+                (buttonAttributes roomIsUnlocked buttonLabel)
                 { onPress =
                     case roomIsUnlocked of
                         True ->
