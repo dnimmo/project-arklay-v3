@@ -8,6 +8,7 @@ import Element.Background as Background
 import Element.Font as Font
 import Html exposing (text)
 import Navigation exposing (Route(..), routeUrlRequest)
+import Page.Ending as Ending
 import Page.Game as Game
 import Page.Intro as Intro
 import Url exposing (Url)
@@ -26,6 +27,7 @@ type alias Model =
 type State
     = ViewIntro Intro.Model
     | ViewGame Game.Model
+    | ViewEnding
 
 
 
@@ -63,6 +65,13 @@ update msg model =
                 Game ->
                     ( { model
                         | state = ViewGame Game.initialModel
+                      }
+                    , Cmd.none
+                    )
+
+                Ending ->
+                    ( { model
+                        | state = ViewEnding
                       }
                     , Cmd.none
                     )
@@ -123,6 +132,9 @@ chooseTitle state =
             in
             "Project Arklay | " ++ name
 
+        ViewEnding ->
+            "Project Arklay | Thanks for playing!"
+
 
 chooseBody : Model -> Element Msg
 chooseBody { key, state } =
@@ -134,6 +146,9 @@ chooseBody { key, state } =
 
                 ViewGame gameModel ->
                     Element.map (\msg -> GameMsg msg) <| Game.view gameModel
+
+                ViewEnding ->
+                    Ending.view
     in
     body
 

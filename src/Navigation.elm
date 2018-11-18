@@ -1,4 +1,4 @@
-module Navigation exposing (Route(..), gamePath, introPath, routeUrlRequest)
+module Navigation exposing (Route(..), endingPath, gamePath, introPath, routeUrlRequest)
 
 import Url exposing (Url)
 
@@ -6,6 +6,7 @@ import Url exposing (Url)
 type Route
     = Intro
     | Game
+    | Ending
 
 
 introPath =
@@ -16,6 +17,10 @@ gamePath =
     "game"
 
 
+endingPath =
+    "ending"
+
+
 routeUrlRequest : Url -> Route
 routeUrlRequest url =
     if url.path == "/" ++ introPath then
@@ -23,6 +28,9 @@ routeUrlRequest url =
 
     else if url.path == "/" ++ gamePath then
         Game
+
+    else if url.path == "/" ++ endingPath then
+        Ending
 
     else
         Intro
