@@ -2,10 +2,11 @@ module Page.Game exposing (Model, Msg, initialModel, update, view)
 
 import Data.Item exposing (Item, itemInfo)
 import Data.Room as Room exposing (Room, itemsThatCanBeUsed, roomInfo)
-import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, minimum, padding, paragraph, rgb255, row, text, width)
+import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, htmlAttribute, minimum, padding, paragraph, rgb255, row, text, width)
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
+import Html.Attributes exposing (id)
 import Page.Game.DirectionControls as DirectionControls
 import Page.Game.Surroundings as Surroundings
 import View.Layout exposing (mainLayout)
@@ -149,14 +150,19 @@ inventoryView : List Item -> Room -> List (Element Msg)
 inventoryView inventory room =
     List.map
         (\x ->
+            let
+                itemName =
+                    itemInfo x |> .name
+            in
             Input.button
                 [ width fill
                 , Font.center
                 , padding 20
+                , htmlAttribute <| id <| "button:" ++ itemName
                 ]
                 { onPress =
                     Just <| UseItem x room
-                , label = text <| (itemInfo x).name
+                , label = text itemName
                 }
         )
         inventory
