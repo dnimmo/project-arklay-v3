@@ -1,9 +1,10 @@
 module Page.Intro exposing (Model, Msg, initialModel, update, view)
 
 import Browser.Navigation as Nav
-import Element exposing (Element, centerX, fill, padding, paragraph, row, text, width, wrappedRow)
+import Element exposing (Element, centerX, fill, htmlAttribute, padding, paragraph, row, text, width, wrappedRow)
 import Element.Font as Font
 import Element.Input as Input
+import Html.Attributes exposing (id)
 import Navigation exposing (gamePath)
 import View.Layout as Layout
 
@@ -58,7 +59,8 @@ view navKey model =
             ]
         , row [ width fill ]
             [ Input.button
-                [ centerX
+                [ htmlAttribute <| id "button:start"
+                , centerX
                 , padding 20
                 ]
                 { onPress =
