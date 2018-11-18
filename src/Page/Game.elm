@@ -88,7 +88,16 @@ update msg model =
                                 Just <| (itemInfo x).name ++ " has been added to your inventory"
 
                         Nothing ->
-                            Just "Hm, nothing interesting here"
+                            let
+                                description =
+                                    roomInfo model.room |> .descriptionWhenExamined
+                            in
+                            Just <|
+                                if description /= "" then
+                                    description
+
+                                else
+                                    "Hm, nothing interesting here"
             }
 
         ToggleInventory ->
