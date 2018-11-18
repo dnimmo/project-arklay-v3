@@ -249,7 +249,10 @@ view model =
                                         rgb255 100 100 100
                             , width fill
                             ]
-                            [ Input.button [ width fill ]
+                            [ Input.button
+                                [ width fill
+                                , htmlAttribute <| id "button:Inventory"
+                                ]
                                 { onPress =
                                     case playerHasItems of
                                         True ->
@@ -262,13 +265,19 @@ view model =
                             ]
                 , case state of
                     DisplayingInventory ->
-                        Input.button [ width fill ]
+                        Input.button
+                            [ width fill
+                            , htmlAttribute <| id "button:CloseInventory"
+                            ]
                             { onPress = Just ToggleInventory
                             , label = text "Close inventory"
                             }
 
                     DisplayingDirections ->
-                        Input.button [ width fill ]
+                        Input.button
+                            [ width fill
+                            , htmlAttribute <| id "button:ExamineRoom"
+                            ]
                             { onPress =
                                 Just <| ExamineRoom item
                             , label = text "Examine room"
