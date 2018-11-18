@@ -101,14 +101,17 @@ update msg model =
             case model.state of
                 ViewGame gameModel ->
                     let
-                        updatedGameModel =
+                        ( updatedGameModel, command ) =
                             Game.update msgReceived gameModel
+
+                        mappedCommand =
+                            Cmd.map GameMsg command
                     in
                     ( { model
                         | state =
                             ViewGame updatedGameModel
                       }
-                    , Cmd.none
+                    , mappedCommand
                     )
 
                 _ ->
@@ -145,7 +148,7 @@ chooseBody { key, state } =
                     Element.map (\msg -> IntroMsg msg) <| Intro.view key hasStarted
 
                 ViewGame gameModel ->
-                    Element.map (\msg -> GameMsg msg) <| Game.view gameModel
+                    Element.map (\msg -> GameMsg msg) <| Game.view key gameModel
 
                 ViewEnding ->
                     Ending.view

@@ -1,12 +1,14 @@
 module Page.Game exposing (Model, Msg, initialModel, update, view)
 
+import Browser.Navigation as Nav
 import Data.Item exposing (Item, itemInfo)
-import Data.Room as Room exposing (Room, itemsThatCanBeUsed, roomInfo)
+import Data.Room as Room exposing (Room, gameComplete, itemsThatCanBeUsed, roomInfo)
 import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, htmlAttribute, minimum, padding, paragraph, rgb255, row, text, width)
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
 import Html.Attributes exposing (id)
+import Navigation exposing (endingPath)
 import Page.Game.DirectionControls as DirectionControls
 import Page.Game.Surroundings as Surroundings
 import View.Layout exposing (mainLayout)
@@ -47,21 +49,27 @@ initialModel =
 type Msg
     = ToggleInventory
     | UseItem Item Room
-    | ChangeRoom Room
+    | ChangeRoom Room Nav.Key
     | ExamineRoom (Maybe Item)
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ChangeRoom room ->
-            { model
+        ChangeRoom room navKey ->
+            ( { model
                 | room = room
                 , messageDisplayed = Nothing
-            }
+              }
+            , if gameComplete room then
+                Nav.pushUrl navKey endingPath
+
+              else
+                Cmd.none
+            )
 
         ExamineRoom item ->
-            { model
+            ( { model
                 | inventory =
                     case item of
                         Just x ->
@@ -99,10 +107,12 @@ update msg model =
 
                                 else
                                     "Hm, nothing interesting here"
-            }
+              }
+            , Cmd.none
+            )
 
         ToggleInventory ->
-            { model
+            ( { model
                 | state =
                     case model.state of
                         DisplayingDirections ->
@@ -111,7 +121,9 @@ update msg model =
                         DisplayingInventory ->
                             DisplayingDirections
                 , messageDisplayed = Nothing
-            }
+              }
+            , Cmd.none
+            )
 
         UseItem item room ->
             let
@@ -139,7 +151,7 @@ update msg model =
                             | messageDisplayed = Just (itemInfo item |> .messageWhenNotUsed)
                         }
             in
-            updatedModel
+            ( updatedModel, Cmd.none )
 
 
 
@@ -168,8 +180,8 @@ inventoryView inventory room =
         inventory
 
 
-view : Model -> Element Msg
-view model =
+view : Nav.Key -> Model -> Element Msg
+view navKey model =
     let
         { room, inventory, itemsUsed, state, messageDisplayed } =
             model
@@ -215,7 +227,7 @@ view model =
             [ Element.none ]
         , case state of
             DisplayingDirections ->
-                DirectionControls.view availableDirections ChangeRoom itemsUsed
+                DirectionControls.view availableDirections ChangeRoom itemsUsed navKey
 
             DisplayingInventory ->
                 column

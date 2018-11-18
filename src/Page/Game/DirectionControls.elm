@@ -1,7 +1,8 @@
 module Page.Game.DirectionControls exposing (view)
 
+import Browser.Navigation as Nav
 import Data.Item exposing (Item)
-import Data.Room exposing (Room, downstairsKey, eastKey, enterKey, northKey, roomInfo, southKey, unlockRequirements, upstairsKey, westKey)
+import Data.Room exposing (Room, downstairsKey, eastKey, endGameKey, enterKey, northKey, roomInfo, southKey, unlockRequirements, upstairsKey, westKey)
 import Dict exposing (Dict)
 import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, htmlAttribute, minimum, padding, paragraph, rgb255, row, spacing, text, width)
 import Element.Font as Font
@@ -33,8 +34,8 @@ columnAttributes =
     ]
 
 
-roomButton : Maybe Room -> (Room -> msg) -> String -> List Item -> Element msg
-roomButton maybeRoom msg buttonLabel itemsUsed =
+roomButton : Maybe Room -> (Room -> Nav.Key -> msg) -> String -> List Item -> Nav.Key -> Element msg
+roomButton maybeRoom msg buttonLabel itemsUsed navKey =
     case maybeRoom of
         Just room ->
             let
@@ -53,7 +54,7 @@ roomButton maybeRoom msg buttonLabel itemsUsed =
                 { onPress =
                     case roomIsUnlocked of
                         True ->
-                            Just <| msg room
+                            Just <| msg room navKey
 
                         False ->
                             Nothing
@@ -64,8 +65,8 @@ roomButton maybeRoom msg buttonLabel itemsUsed =
             paragraph [ height (fill |> minimum 50) ] [ Element.none ]
 
 
-view : Dict String Room -> (Room -> msg) -> List Item -> Element msg
-view directions msg itemsUsed =
+view : Dict String Room -> (Room -> Nav.Key -> msg) -> List Item -> Nav.Key -> Element msg
+view directions msg itemsUsed navKey =
     let
         enter =
             Dict.get enterKey directions
@@ -87,6 +88,9 @@ view directions msg itemsUsed =
 
         south =
             Dict.get southKey directions
+
+        end =
+            Dict.get endGameKey directions
     in
     row
         [ centerX
@@ -101,6 +105,7 @@ view directions msg itemsUsed =
                 msg
                 westKey
                 itemsUsed
+                navKey
             ]
         , column
             columnAttributes
@@ -109,26 +114,37 @@ view directions msg itemsUsed =
                 msg
                 upstairsKey
                 itemsUsed
+                navKey
             , roomButton
                 north
                 msg
                 northKey
                 itemsUsed
+                navKey
             , roomButton
                 enter
                 msg
                 enterKey
                 itemsUsed
+                navKey
             , roomButton
                 south
                 msg
                 southKey
                 itemsUsed
+                navKey
             , roomButton
                 downstairs
                 msg
                 downstairsKey
                 itemsUsed
+                navKey
+            , roomButton
+                end
+                msg
+                endGameKey
+                itemsUsed
+                navKey
             ]
         , column
             (Font.alignLeft
@@ -139,5 +155,6 @@ view directions msg itemsUsed =
                 msg
                 eastKey
                 itemsUsed
+                navKey
             ]
         ]

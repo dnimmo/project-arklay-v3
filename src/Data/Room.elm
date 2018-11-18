@@ -1,4 +1,4 @@
-module Data.Room exposing (Room(..), downstairsKey, eastKey, enterKey, itemsThatCanBeUsed, northKey, roomInfo, southKey, startingRoom, unlockRequirements, upstairsKey, westKey)
+module Data.Room exposing (Room(..), downstairsKey, eastKey, endGameKey, enterKey, gameComplete, itemsThatCanBeUsed, northKey, roomInfo, southKey, startingRoom, unlockRequirements, upstairsKey, westKey)
 
 import Data.Item exposing (Item(..))
 import Dict exposing (Dict)
@@ -67,6 +67,21 @@ type alias RoomInfo =
     , availableDirections : Dict String Room
     , descriptionWhenExamined : String
     }
+
+
+startingRoom : Room
+startingRoom =
+    Start
+
+
+gameComplete : Room -> Bool
+gameComplete room =
+    case room of
+        End ->
+            True
+
+        _ ->
+            False
 
 
 unlockRequirements : Room -> Maybe (List Item)
@@ -168,9 +183,8 @@ southKey =
     "South"
 
 
-startingRoom : Room
-startingRoom =
-    Start
+endGameKey =
+    "End Game"
 
 
 roomInfo : Room -> RoomInfo
@@ -904,7 +918,7 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList
-                    [ ( "End Game", End )
+                    [ ( endGameKey, End )
                     ]
             , descriptionWhenExamined = ""
             }
