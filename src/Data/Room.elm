@@ -65,6 +65,7 @@ type alias RoomInfo =
     , surroundingsWhenItemUsed : Maybe String
     , item : Maybe Item
     , availableDirections : Dict String Room
+    , descriptionWhenExamined : String
     }
 
 
@@ -184,6 +185,7 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList [ ( enterKey, Entrance ) ]
+            , descriptionWhenExamined = ""
             }
 
         Entrance ->
@@ -199,6 +201,7 @@ roomInfo room =
                     , ( westKey, DiningHall )
                     , ( eastKey, HallwayOne )
                     ]
+            , descriptionWhenExamined = "This room is enormous. There are a number of large paintings on the walls."
             }
 
         UpstairsFoyer ->
@@ -213,6 +216,7 @@ roomInfo room =
                     [ ( northKey, UpstairsHallwayOne )
                     , ( downstairsKey, Entrance )
                     ]
+            , descriptionWhenExamined = "There's a soft breeze coming in from a crack in one of the windows."
             }
 
         UpstairsHallwayOne ->
@@ -228,6 +232,7 @@ roomInfo room =
                     , ( eastKey, UpstairsThirdBedroom )
                     , ( southKey, UpstairsFoyer )
                     ]
+            , descriptionWhenExamined = "There really isn't a lot to see here."
             }
 
         UpstairsStudy ->
@@ -243,6 +248,7 @@ roomInfo room =
                     , ( westKey, UpstairsSecretRoomThree )
                     , ( eastKey, UpstairsHallwayOne )
                     ]
+            , descriptionWhenExamined = "The room is bathed in a soft glow from the terminal."
             }
 
         UpstairsSecretRoomThree ->
@@ -254,6 +260,7 @@ roomInfo room =
             , item = Just LionCrest
             , availableDirections =
                 Dict.fromList [ ( eastKey, UpstairsStudy ) ]
+            , descriptionWhenExamined = ""
             }
 
         UpstairsStairwayThree ->
@@ -269,6 +276,7 @@ roomInfo room =
                     , ( eastKey, UpstairsHallwayTwo )
                     , ( downstairsKey, StairwayThree )
                     ]
+            , descriptionWhenExamined = "This door is something else. Where do you even get something like this?"
             }
 
         UpstairsMasterBedroom ->
@@ -283,6 +291,7 @@ roomInfo room =
                     [ ( westKey, UpstairsMasterEnSuite )
                     , ( southKey, UpstairsStairwayThree )
                     ]
+            , descriptionWhenExamined = "It's so much hotter in here than anywhere else. The fire must have been burning for a while now."
             }
 
         UpstairsMasterEnSuite ->
@@ -296,6 +305,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( eastKey, UpstairsMasterBedroom )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         UpstairsStairwayTwo ->
@@ -310,6 +320,7 @@ roomInfo room =
                     [ ( westKey, UpstairsHallwayFour )
                     , ( downstairsKey, StairwayTwo )
                     ]
+            , descriptionWhenExamined = "This staircase doesn't seem to fit with the rest of the house, as if it was built much later."
             }
 
         UpstairsHallwayTwo ->
@@ -326,6 +337,7 @@ roomInfo room =
                     , ( eastKey, UpstairsArtGallery )
                     , ( southKey, UpstairsStudy )
                     ]
+            , descriptionWhenExamined = "It's easy to feel lost here. Every door in this room looks the same."
             }
 
         UpstairsArtGallery ->
@@ -340,6 +352,7 @@ roomInfo room =
                     [ ( westKey, UpstairsHallwayTwo )
                     , ( eastKey, UpstairsHallwayThree )
                     ]
+            , descriptionWhenExamined = "It feels like there are a hundred pairs of eyes. Watching."
             }
 
         UpstairsHallwayThree ->
@@ -356,6 +369,7 @@ roomInfo room =
                     , ( eastKey, UpstairsHallwayFour )
                     , ( southKey, UpstairsLibrary )
                     ]
+            , descriptionWhenExamined = "Why board a room shut? This is all a bit weird."
             }
 
         UpstairsAquarium ->
@@ -369,6 +383,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( southKey, UpstairsHallwayThree )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         UpstairsLibrary ->
@@ -382,6 +397,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( northKey, UpstairsHallwayThree )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         UpstairsHallwayFour ->
@@ -397,6 +413,7 @@ roomInfo room =
                     , ( eastKey, UpstairsStairwayTwo )
                     , ( southKey, UpstairsSecondBedroom )
                     ]
+            , descriptionWhenExamined = "It feels as if you're being watched...but by whom?"
             }
 
         UpstairsSecondBedroom ->
@@ -411,6 +428,7 @@ roomInfo room =
                     [ ( northKey, UpstairsHallwayFour )
                     , ( southKey, UpstairsSecondBathroom )
                     ]
+            , descriptionWhenExamined = "I guess they don't have many guests here."
             }
 
         UpstairsSecondBathroom ->
@@ -425,6 +443,7 @@ roomInfo room =
                     [ ( northKey, UpstairsSecondBedroom )
                     , ( westKey, UpstairsThirdBedroom )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         UpstairsThirdBedroom ->
@@ -439,6 +458,7 @@ roomInfo room =
                     [ ( westKey, UpstairsHallwayOne )
                     , ( eastKey, UpstairsSecondBathroom )
                     ]
+            , descriptionWhenExamined = "Why board a room shut? This is all a bit weird."
             }
 
         UpstairsTrophyRoom ->
@@ -452,6 +472,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( southKey, UpstairsHallwayTwo )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         DiningHall ->
@@ -466,6 +487,7 @@ roomInfo room =
                     [ ( northKey, HallwayTwo )
                     , ( eastKey, Entrance )
                     ]
+            , descriptionWhenExamined = "There's a pool of blood on the floor..."
             }
 
         HallwayOne ->
@@ -480,6 +502,7 @@ roomInfo room =
                     [ ( northKey, StatueRoom )
                     , ( westKey, Entrance )
                     ]
+            , descriptionWhenExamined = "There's nothing to see here, somehow that doesn't feel reassuring."
             }
 
         HallwayTwo ->
@@ -496,6 +519,7 @@ roomInfo room =
                     , ( eastKey, UtilityRoom )
                     , ( southKey, DiningHall )
                     ]
+            , descriptionWhenExamined = "Everything is covered in cobwebs. Still, at least the flies are being dealt with."
             }
 
         UtilityRoom ->
@@ -510,6 +534,7 @@ roomInfo room =
                     [ ( westKey, HallwayTwo )
                     , ( downstairsKey, BasementStairway )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         Kitchen ->
@@ -525,6 +550,7 @@ roomInfo room =
                     , ( eastKey, Freezer )
                     , ( southKey, HallwayTwo )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         Freezer ->
@@ -538,6 +564,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( westKey, Kitchen )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         WasteDisposal ->
@@ -552,6 +579,7 @@ roomInfo room =
                     [ ( enterKey, BasementWasteDisposal )
                     , ( southKey, Kitchen )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         HallwayFour ->
@@ -567,6 +595,7 @@ roomInfo room =
                     , ( westKey, MusicRoom )
                     , ( eastKey, HallwayTwo )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         StairwayThree ->
@@ -581,6 +610,7 @@ roomInfo room =
                     [ ( upstairsKey, UpstairsStairwayThree )
                     , ( southKey, HallwayFour )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         MusicRoom ->
@@ -596,6 +626,7 @@ roomInfo room =
                     , ( eastKey, HallwayFour )
                     , ( southKey, SecretRoomOne )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         HallwayFive ->
@@ -610,6 +641,7 @@ roomInfo room =
                     [ ( northKey, Gym )
                     , ( southKey, MusicRoom )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         Gym ->
@@ -624,6 +656,7 @@ roomInfo room =
                     [ ( eastKey, SwimmingPool )
                     , ( southKey, HallwayFive )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         SwimmingPool ->
@@ -638,6 +671,7 @@ roomInfo room =
                     [ ( westKey, Gym )
                     , ( eastKey, Showers )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         Showers ->
@@ -651,6 +685,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( westKey, SwimmingPool )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         SecretRoomOne ->
@@ -664,6 +699,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( northKey, MusicRoom )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         StatueRoom ->
@@ -679,6 +715,7 @@ roomInfo room =
                     , ( eastKey, HallwayThree )
                     , ( southKey, HallwayOne )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         SecretRoomTwo ->
@@ -692,6 +729,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( southKey, StatueRoom )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         HallwayThree ->
@@ -708,6 +746,7 @@ roomInfo room =
                     , ( eastKey, StairwayTwo )
                     , ( southKey, Garage )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         Garage ->
@@ -721,6 +760,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( northKey, HallwayThree )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         ServantsQuarters ->
@@ -735,6 +775,7 @@ roomInfo room =
                     [ ( westKey, ServantsBathroom )
                     , ( southKey, HallwayThree )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         ServantsBathroom ->
@@ -748,6 +789,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( eastKey, ServantsQuarters )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         StairwayTwo ->
@@ -762,6 +804,7 @@ roomInfo room =
                     [ ( upstairsKey, UpstairsStairwayTwo )
                     , ( westKey, HallwayThree )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         BasementStairway ->
@@ -778,6 +821,7 @@ roomInfo room =
                     , ( eastKey, BasementStorageTwo )
                     , ( southKey, BasementWineCellar )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         BasementStorage ->
@@ -791,6 +835,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( eastKey, BasementStairway )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         BasementStorageTwo ->
@@ -804,6 +849,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( westKey, BasementStairway )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         BasementItemRoom ->
@@ -817,6 +863,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( southKey, BasementStorage )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         BasementWasteDisposal ->
@@ -830,6 +877,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( eastKey, BasementItemRoom )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         BasementWineCellar ->
@@ -844,6 +892,7 @@ roomInfo room =
                     [ ( northKey, BasementStairway )
                     , ( westKey, BasementLabEntrance )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         BasementLabEntrance ->
@@ -857,6 +906,7 @@ roomInfo room =
                 Dict.fromList
                     [ ( "End Game", End )
                     ]
+            , descriptionWhenExamined = ""
             }
 
         End ->
@@ -868,4 +918,5 @@ roomInfo room =
             , item = Nothing
             , availableDirections =
                 Dict.fromList []
+            , descriptionWhenExamined = ""
             }
