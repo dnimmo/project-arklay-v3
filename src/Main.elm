@@ -184,7 +184,7 @@ view model =
 
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url navKey =
-    update (ChangedUrl url) { key = navKey, state = ViewIntro Intro.initialModel }
+    ({ key = navKey, state = ViewIntro Intro.initialModel }, Cmd.none)
 
 
 
