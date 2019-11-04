@@ -50,10 +50,10 @@ update msg model =
 
 startGameView : Nav.Key -> Element Msg
 startGameView navKey =
-    wrappedRow
+    column
         [ width fill
         ]
-        [ row []
+        [ wrappedRow []
             [ paragraph []
                 [ text "Your head hurts. You're not sure where you are, and you definitely don't know how you got here. There's rain thrashing the ground all around you. You figure you might as well try and understand what the Hell is going on..." ]
             ]
