@@ -3,8 +3,6 @@ module Data.Game exposing (GameState(..), Model, initialModel, processSaveData, 
 import Data.Item as Item exposing (Item)
 import Data.Room as Room exposing (Room)
 import Data.SaveData as SaveData
-import Json.Decode as Decode exposing (Decoder, list, maybe, string)
-import Json.Decode.Pipeline exposing (required)
 
 
 type alias Model =
@@ -50,7 +48,7 @@ gameStateFromString stateString =
         "Displaying inventory" ->
             DisplayingInventory
 
-        unknownState ->
+        _ ->
             DisplayingDirections
 
 

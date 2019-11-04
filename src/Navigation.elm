@@ -9,14 +9,17 @@ type Route
     | Ending
 
 
+introPath : String
 introPath =
     "intro"
 
 
+gamePath : String
 gamePath =
     "game"
 
 
+endingPath : String
 endingPath =
     "ending"
 

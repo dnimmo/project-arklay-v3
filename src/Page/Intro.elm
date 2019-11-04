@@ -34,8 +34,8 @@ type Msg
     | LoadGame SaveData.Model
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
+update : Msg -> ( Model, Cmd Msg )
+update msg =
     case msg of
         StartGame navKey ->
             ( Started, Nav.pushUrl navKey gamePath )

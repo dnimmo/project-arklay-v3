@@ -3,9 +3,8 @@ module Page.Game exposing (Msg, update, view)
 import Browser.Navigation as Nav
 import Data.Game as Game exposing (GameState(..))
 import Data.Item exposing (Item, itemInfo)
-import Data.Room as Room exposing (Room, gameComplete, itemsThatCanBeUsed, roomInfo)
-import Data.SaveData as SaveData
-import Element exposing (Element, centerX, centerY, column, fill, height, htmlAttribute, minimum, padding, paragraph, rgb255, row, text, width)
+import Data.Room exposing (Room, gameComplete, itemsThatCanBeUsed, roomInfo)
+import Element exposing (Element, column, fill, height, htmlAttribute, minimum, padding, paragraph, rgb255, row, text, width)
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
@@ -167,7 +166,7 @@ view navKey model =
         { room, inventory, itemsUsed, state, messageDisplayed } =
             model
 
-        { intro, surroundings, item, availableDirections, surroundingsWhenItemPickedUp } =
+        { intro, item, availableDirections } =
             roomInfo room
 
         roomHasItem =
@@ -234,12 +233,11 @@ view navKey model =
                     DisplayingDirections ->
                         column
                             [ Font.color <|
-                                case playerHasItems of
-                                    True ->
-                                        rgb255 250 250 250
+                                if playerHasItems then
+                                    rgb255 250 250 250
 
-                                    False ->
-                                        rgb255 100 100 100
+                                else
+                                    rgb255 100 100 100
                             , width fill
                             ]
                             [ Input.button
@@ -247,12 +245,11 @@ view navKey model =
                                 , htmlAttribute <| id "button:Inventory"
                                 ]
                                 { onPress =
-                                    case playerHasItems of
-                                        True ->
-                                            Just ToggleInventory
+                                    if playerHasItems then
+                                        Just ToggleInventory
 
-                                        False ->
-                                            Nothing
+                                    else
+                                        Nothing
                                 , label = paragraph [] [ text "Inventory" ]
                                 }
                             ]
@@ -287,8 +284,3 @@ view navKey model =
                     ]
                 ]
         ]
-
-
-subscriptions : Sub Msg
-subscriptions =
-    Sub.none

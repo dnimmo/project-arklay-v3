@@ -18,7 +18,6 @@ module Data.Room exposing
 
 import Data.Item exposing (Item(..))
 import Dict exposing (Dict)
-import Json.Decode as Decode exposing (Decoder)
 
 
 type Room
@@ -325,38 +324,46 @@ fromRoomName roomName =
         "End" ->
             End
 
-        unknownRoom ->
+        _ ->
             Start
 
 
+enterKey : String
 enterKey =
     "Enter"
 
 
+upstairsKey : String
 upstairsKey =
     "Upstairs"
 
 
+downstairsKey : String
 downstairsKey =
     "Downstairs"
 
 
+northKey : String
 northKey =
     "North"
 
 
+westKey : String
 westKey =
     "West"
 
 
+eastKey : String
 eastKey =
     "East"
 
 
+southKey : String
 southKey =
     "South"
 
 
+endGameKey : String
 endGameKey =
     "End Game"
 

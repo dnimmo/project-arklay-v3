@@ -1,7 +1,5 @@
 module Data.Item exposing (Item(..), fromString, itemInfo, itemsEncoder)
 
-import Json.Decode as Decode exposing (Decoder)
-
 
 type Item
     = LionCrest
@@ -73,7 +71,7 @@ fromString itemString =
         "Wolf Crest" ->
             WolfCrest
 
-        unknownItem ->
+        _ ->
             ErrorItem
 
 

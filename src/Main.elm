@@ -9,7 +9,6 @@ import Data.SaveData as SaveData
 import Element exposing (Element, centerX, centerY, el, fill, layout, rgb255, width)
 import Element.Background as Background
 import Element.Font as Font
-import Html exposing (text)
 import Json.Decode exposing (Error, decodeValue)
 import Navigation exposing (Route(..), routeUrlRequest)
 import Page.Ending as Ending
@@ -57,7 +56,7 @@ update msg model =
                 Internal url ->
                     ( model, Nav.pushUrl model.key url.path )
 
-                External path ->
+                External _ ->
                     ( model, Cmd.none )
 
         ChangedUrl url ->
@@ -86,10 +85,10 @@ update msg model =
         -- HANDLE EVERYTHING ELSE
         IntroMsg msgReceived ->
             case model.state of
-                ViewIntro hasStarted ->
+                ViewIntro _ ->
                     let
                         ( updatedIntroModel, command ) =
-                            Intro.update msgReceived hasStarted
+                            Intro.update msgReceived
 
                         mappedCommand =
                             Cmd.map IntroMsg command
@@ -140,7 +139,7 @@ update msg model =
             , Cmd.none
             )
 
-        GameLoaded (Err err) ->
+        GameLoaded (Err _) ->
             ( { model
                 | state = ViewGame Data.Game.initialModel
               }
@@ -234,6 +233,7 @@ subscriptions _ =
 -- MAIN
 
 
+main : Program (Maybe SaveData.Model) Model Msg
 main =
     Browser.application
         { init = init

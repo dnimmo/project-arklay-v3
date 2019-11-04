@@ -18,15 +18,15 @@ buttonAttributes isUnlocked buttonLabel =
     , height (fill |> minimum 35)
     , htmlAttribute <| id <| "button:" ++ buttonLabel
     , Font.color <|
-        case isUnlocked of
-            True ->
-                rgb255 250 250 250
+        if isUnlocked then
+            rgb255 250 250 250
 
-            False ->
-                rgb255 100 100 100
+        else
+            rgb255 100 100 100
     ]
 
 
+columnAttributes : List (Element.Attribute msg)
 columnAttributes =
     [ centerY
     , width <| fillPortion 3
@@ -52,12 +52,11 @@ roomButton maybeRoom msg buttonLabel itemsUsed navKey =
             Input.button
                 (buttonAttributes roomIsUnlocked buttonLabel)
                 { onPress =
-                    case roomIsUnlocked of
-                        True ->
-                            Just <| msg room navKey
+                    if roomIsUnlocked then
+                        Just <| msg room navKey
 
-                        False ->
-                            Nothing
+                    else
+                        Nothing
                 , label = text buttonLabel
                 }
 
