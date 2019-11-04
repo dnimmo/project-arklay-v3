@@ -1,9 +1,11 @@
-module Page.Game exposing (Model, Msg, initialModel, update, view)
+module Page.Game exposing (Msg, update, view)
 
 import Browser.Navigation as Nav
+import Data.Game as Game exposing (GameState(..))
 import Data.Item exposing (Item, itemInfo)
 import Data.Room as Room exposing (Room, gameComplete, itemsThatCanBeUsed, roomInfo)
-import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, htmlAttribute, minimum, padding, paragraph, rgb255, row, text, width)
+import Data.SaveData as SaveData
+import Element exposing (Element, centerX, centerY, column, fill, height, htmlAttribute, minimum, padding, paragraph, rgb255, row, text, width)
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
@@ -11,35 +13,8 @@ import Html.Attributes exposing (id)
 import Navigation exposing (endingPath)
 import Page.Game.DirectionControls as DirectionControls
 import Page.Game.Surroundings as Surroundings
+import Ports
 import View.Layout exposing (mainLayout)
-
-
-
--- MODEL
-
-
-type alias Model =
-    { state : State
-    , room : Room
-    , inventory : List Item
-    , itemsUsed : List Item
-    , messageDisplayed : Maybe String
-    }
-
-
-type State
-    = DisplayingDirections
-    | DisplayingInventory
-
-
-initialModel : Model
-initialModel =
-    { state = DisplayingDirections
-    , room = Room.startingRoom
-    , inventory = []
-    , itemsUsed = []
-    , messageDisplayed = Nothing
-    }
 
 
 
@@ -53,16 +28,23 @@ type Msg
     | ExamineRoom (Maybe Item)
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Game.Model -> ( Game.Model, Cmd Msg )
 update msg model =
     case msg of
         ChangeRoom room navKey ->
-            ( { model
-                | room = room
-                , messageDisplayed = Nothing
-              }
+            let
+                updatedModel =
+                    { model
+                        | room = room
+                        , messageDisplayed = Nothing
+                    }
+            in
+            ( updatedModel
             , if gameComplete room then
-                Nav.pushUrl navKey endingPath
+                Cmd.batch
+                    [ Ports.deleteSaveData ()
+                    , Nav.pushUrl navKey endingPath
+                    ]
 
               else
                 Cmd.none
@@ -134,24 +116,23 @@ update msg model =
 
                         Nothing ->
                             False
-
-                updatedModel =
-                    if itemCanBeUsed then
-                        { model
-                            | inventory =
-                                model.inventory
-                                    |> List.filter (\x -> x /= item)
-                            , itemsUsed = item :: model.itemsUsed
-                            , messageDisplayed = Just (itemInfo item |> .messageWhenUsed)
-                            , state = DisplayingDirections
-                        }
-
-                    else
-                        { model
-                            | messageDisplayed = Just (itemInfo item |> .messageWhenNotUsed)
-                        }
             in
-            ( updatedModel, Cmd.none )
+            ( if itemCanBeUsed then
+                { model
+                    | inventory =
+                        model.inventory
+                            |> List.filter (\x -> x /= item)
+                    , itemsUsed = item :: model.itemsUsed
+                    , messageDisplayed = Just (itemInfo item |> .messageWhenUsed)
+                    , state = DisplayingDirections
+                }
+
+              else
+                { model
+                    | messageDisplayed = Just (itemInfo item |> .messageWhenNotUsed)
+                }
+            , Cmd.none
+            )
 
 
 
@@ -180,7 +161,7 @@ inventoryView inventory room =
         inventory
 
 
-view : Nav.Key -> Model -> Element Msg
+view : Nav.Key -> Game.Model -> Element Msg
 view navKey model =
     let
         { room, inventory, itemsUsed, state, messageDisplayed } =
@@ -306,3 +287,8 @@ view navKey model =
                     ]
                 ]
         ]
+
+
+subscriptions : Sub Msg
+subscriptions =
+    Sub.none

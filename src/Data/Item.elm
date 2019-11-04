@@ -1,4 +1,6 @@
-module Data.Item exposing (Item(..), itemInfo)
+module Data.Item exposing (Item(..), fromString, itemInfo, itemsEncoder)
+
+import Json.Decode as Decode exposing (Decoder)
 
 
 type Item
@@ -14,6 +16,7 @@ type Item
     | Handle
     | SmallKey
     | WolfCrest
+    | ErrorItem
 
 
 type alias ItemInfo =
@@ -22,6 +25,56 @@ type alias ItemInfo =
     , messageWhenUsed : String
     , messageWhenNotUsed : String
     }
+
+
+itemsEncoder : List Item -> List String
+itemsEncoder items =
+    List.map
+        (\x -> itemInfo x |> .name)
+        items
+
+
+fromString : String -> Item
+fromString itemString =
+    case itemString of
+        "Lion Crest" ->
+            LionCrest
+
+        "Wine Bottle" ->
+            WineBottle
+
+        "Utility Key" ->
+            UtilityKey
+
+        "Sheet Music" ->
+            SheetMusic
+
+        "Moose Head" ->
+            MooseHead
+
+        "Keycode" ->
+            Keycode
+
+        "Eagle Crest" ->
+            EagleCrest
+
+        "Crowbar" ->
+            Crowbar
+
+        "Statue Head" ->
+            StatueHead
+
+        "Handle" ->
+            Handle
+
+        "Small Key" ->
+            SmallKey
+
+        "Wolf Crest" ->
+            WolfCrest
+
+        unknownItem ->
+            ErrorItem
 
 
 itemInfo : Item -> ItemInfo
@@ -109,4 +162,11 @@ itemInfo item =
             , description = "A crest with a wolf on it. Very unusual."
             , messageWhenUsed = "You place the crest into the door"
             , messageWhenNotUsed = "What could this be for?"
+            }
+
+        ErrorItem ->
+            { name = "Error Item"
+            , description = "You shouldn't be seeing this - something has gone wrong!"
+            , messageWhenUsed = ""
+            , messageWhenNotUsed = "How embarassing"
             }

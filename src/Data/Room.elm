@@ -1,7 +1,24 @@
-module Data.Room exposing (Room(..), downstairsKey, eastKey, endGameKey, enterKey, gameComplete, itemsThatCanBeUsed, northKey, roomInfo, southKey, startingRoom, unlockRequirements, upstairsKey, westKey)
+module Data.Room exposing
+    ( Room(..)
+    , downstairsKey
+    , eastKey
+    , endGameKey
+    , enterKey
+    , fromRoomName
+    , gameComplete
+    , itemsThatCanBeUsed
+    , northKey
+    , roomInfo
+    , southKey
+    , startingRoom
+    , unlockRequirements
+    , upstairsKey
+    , westKey
+    )
 
 import Data.Item exposing (Item(..))
 import Dict exposing (Dict)
+import Json.Decode as Decode exposing (Decoder)
 
 
 type Room
@@ -153,6 +170,163 @@ itemsThatCanBeUsed room =
 
         _ ->
             Nothing
+
+
+fromRoomName : String -> Room
+fromRoomName roomName =
+    case roomName of
+        "Start" ->
+            Start
+
+        "Entrance" ->
+            Entrance
+
+        "Upstairs Foyer" ->
+            UpstairsFoyer
+
+        "Dining Hall" ->
+            DiningHall
+
+        "Hallway One" ->
+            HallwayOne
+
+        "Hallway Two" ->
+            HallwayTwo
+
+        "Hallway Three" ->
+            HallwayThree
+
+        "Hallway Four" ->
+            HallwayFour
+
+        "Hallway Five" ->
+            HallwayFive
+
+        "Upstairs Hallway One" ->
+            UpstairsHallwayOne
+
+        "Upstairs Hallway Two" ->
+            UpstairsHallwayTwo
+
+        "Upstairs Hallway Three" ->
+            UpstairsHallwayThree
+
+        "Upstairs Hallway Four" ->
+            UpstairsHallwayFour
+
+        "Upstairs Study" ->
+            UpstairsStudy
+
+        "Upstairs Secret Room Three" ->
+            UpstairsSecretRoomThree
+
+        "Upstairs Stairway Three" ->
+            UpstairsStairwayThree
+
+        "Upstairs Master Bedroom" ->
+            UpstairsMasterBedroom
+
+        "Stairway Two" ->
+            StairwayTwo
+
+        "Stairway Three" ->
+            StairwayThree
+
+        "Upstairs Master En Suite" ->
+            UpstairsMasterEnSuite
+
+        "Upstairs Stairway Two" ->
+            UpstairsStairwayTwo
+
+        "Upstairs Trophy Room" ->
+            UpstairsTrophyRoom
+
+        "Upstairs Art Gallery" ->
+            UpstairsArtGallery
+
+        "Upstairs Aquarium" ->
+            UpstairsAquarium
+
+        "Upstairs Library" ->
+            UpstairsLibrary
+
+        "Upstairs Second Bedroom" ->
+            UpstairsSecondBedroom
+
+        "Upstairs Third Bedroom" ->
+            UpstairsThirdBedroom
+
+        "Upstairs Second Bathroom" ->
+            UpstairsSecondBathroom
+
+        "Kitchen" ->
+            Kitchen
+
+        "Utility Room" ->
+            UtilityRoom
+
+        "Basement Stairway" ->
+            BasementStairway
+
+        "Waste Disposal" ->
+            WasteDisposal
+
+        "Freezer" ->
+            Freezer
+
+        "Basement Waste Disposal" ->
+            BasementWasteDisposal
+
+        "Music Room" ->
+            MusicRoom
+
+        "Secret Room One" ->
+            SecretRoomOne
+
+        "Secret Room Two" ->
+            SecretRoomTwo
+
+        "Gym" ->
+            Gym
+
+        "Swimming Pool" ->
+            SwimmingPool
+
+        "Showers" ->
+            Showers
+
+        "Statue Room" ->
+            StatueRoom
+
+        "Servants' Quarters" ->
+            ServantsQuarters
+
+        "Garage" ->
+            Garage
+
+        "Sevants' Bathroom" ->
+            ServantsBathroom
+
+        "Basement Storage" ->
+            BasementStorage
+
+        "Basement Storage Two" ->
+            BasementStorageTwo
+
+        "Basement Wine Cellar" ->
+            BasementWineCellar
+
+        "Basement Item Room" ->
+            BasementItemRoom
+
+        "Basmenet Lab Entrance" ->
+            BasementLabEntrance
+
+        "End" ->
+            End
+
+        unknownRoom ->
+            Start
 
 
 enterKey =

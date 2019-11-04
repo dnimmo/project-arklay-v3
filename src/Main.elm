@@ -2,15 +2,20 @@ module Main exposing (main)
 
 import Browser exposing (Document, UrlRequest(..))
 import Browser.Navigation as Nav
+import Data.Game exposing (processSaveData, stateEncoder)
+import Data.Item exposing (itemsEncoder)
 import Data.Room exposing (roomInfo)
+import Data.SaveData as SaveData
 import Element exposing (Element, centerX, centerY, el, fill, layout, rgb255, width)
 import Element.Background as Background
 import Element.Font as Font
 import Html exposing (text)
+import Json.Decode exposing (Error, decodeValue)
 import Navigation exposing (Route(..), routeUrlRequest)
 import Page.Ending as Ending
 import Page.Game as Game
 import Page.Intro as Intro
+import Ports
 import Url exposing (Url)
 
 
@@ -20,13 +25,14 @@ import Url exposing (Url)
 
 type alias Model =
     { key : Nav.Key
+    , saveData : Maybe SaveData.Model
     , state : State
     }
 
 
 type State
     = ViewIntro Intro.Model
-    | ViewGame Game.Model
+    | ViewGame Data.Game.Model
     | ViewEnding
 
 
@@ -39,6 +45,7 @@ type Msg
     | ActivatedLink Browser.UrlRequest
     | IntroMsg Intro.Msg
     | GameMsg Game.Msg
+    | GameLoaded (Result Error SaveData.Model)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -57,14 +64,14 @@ update msg model =
             case routeUrlRequest url of
                 Intro ->
                     ( { model
-                        | state = ViewIntro Intro.initialModel
+                        | state = ViewIntro <| Intro.initialModel model.saveData
                       }
                     , Cmd.none
                     )
 
                 Game ->
                     ( { model
-                        | state = ViewGame Game.initialModel
+                        | state = ViewGame Data.Game.initialModel
                       }
                     , Cmd.none
                     )
@@ -111,11 +118,34 @@ update msg model =
                         | state =
                             ViewGame updatedGameModel
                       }
-                    , mappedCommand
+                    , Cmd.batch
+                        [ mappedCommand
+                        , Ports.saveGame
+                            { inventory = itemsEncoder updatedGameModel.inventory
+                            , itemsUsed = itemsEncoder updatedGameModel.itemsUsed
+                            , messageDisplayed = updatedGameModel.messageDisplayed
+                            , room = roomInfo updatedGameModel.room |> .name
+                            , state = stateEncoder updatedGameModel.state
+                            }
+                        ]
                     )
 
                 _ ->
                     ( model, Cmd.none )
+
+        GameLoaded (Ok saveData) ->
+            ( { model
+                | state = ViewGame <| processSaveData saveData
+              }
+            , Cmd.none
+            )
+
+        GameLoaded (Err err) ->
+            ( { model
+                | state = ViewGame Data.Game.initialModel
+              }
+            , Cmd.none
+            )
 
 
 
@@ -182,9 +212,13 @@ view model =
 -- INIT
 
 
-init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
-init flags url navKey =
-    update (ChangedUrl url) { key = navKey, state = ViewIntro Intro.initialModel }
+init : Maybe SaveData.Model -> Url -> Nav.Key -> ( Model, Cmd Msg )
+init saveData url navKey =
+    update (ChangedUrl url)
+        { key = navKey
+        , saveData = saveData
+        , state = ViewIntro <| Intro.initialModel saveData
+        }
 
 
 
@@ -192,8 +226,8 @@ init flags url navKey =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
+subscriptions _ =
+    Sub.batch [ Ports.gameLoaded <| GameLoaded << decodeValue SaveData.decoder ]
 
 
 

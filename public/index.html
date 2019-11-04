@@ -13,11 +13,23 @@
     <div id="root" class="section has-background-primary"></div>
     <script src='./arklay.js'></script>
     <script>
-			document.addEventListener('DOMContentLoaded', function (event) {
-				var app = Elm.Main.init({
-					node: document.getElementById('root')
-                })
-			        })
+      var app = 
+        Elm.Main.init({
+					node: document.getElementById('root'),
+          flags: JSON.parse(localStorage.getItem('saveData'))
+        })
+        
+      app.ports.saveGame.subscribe((saveData) => {
+        localStorage.setItem('saveData', JSON.stringify(saveData))
+      })
+
+      app.ports.deleteSaveData.subscribe(() => {
+        localStorage.removeItem('saveData')
+      })
+
+      app.ports.loadGame.subscribe((saveData) => {
+        app.ports.gameLoaded.send(saveData)
+      })
 		</script>
 </body>
 </html>
