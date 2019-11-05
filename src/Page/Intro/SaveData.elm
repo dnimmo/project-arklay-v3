@@ -1,8 +1,10 @@
-module Data.SaveData exposing (Model, decoder, initialModel)
+module Page.Intro.SaveData exposing (Model, decoder, initialModel, processSaveData)
 
-import Data.Room as Room exposing (roomInfo)
+import Item
 import Json.Decode as Decode exposing (Decoder, list, maybe, string)
 import Json.Decode.Pipeline exposing (optional, required)
+import Page.Game exposing (gameStateFromString)
+import Room exposing (roomInfo)
 
 
 type alias Model =
@@ -32,3 +34,13 @@ decoder =
         |> optional "messageDisplayed" (maybe string) Nothing
         |> required "room" string
         |> required "state" string
+
+
+processSaveData : Model -> Page.Game.Model
+processSaveData saveData =
+    { inventory = saveData.inventory |> List.map Item.fromString
+    , itemsUsed = saveData.itemsUsed |> List.map Item.fromString
+    , messageDisplayed = saveData.messageDisplayed
+    , room = Room.fromRoomName saveData.room
+    , state = gameStateFromString saveData.state
+    }

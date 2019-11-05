@@ -1,12 +1,12 @@
 module Page.Intro exposing (Model, Msg, initialModel, update, view)
 
 import Browser.Navigation as Nav
-import Data.SaveData as SaveData
 import Element exposing (Element, centerX, column, fill, htmlAttribute, padding, paragraph, row, text, width, wrappedRow)
 import Element.Font as Font
 import Element.Input as Input
 import Html.Attributes exposing (id)
 import Navigation exposing (gamePath)
+import Page.Intro.SaveData as SaveData
 import Ports exposing (loadGame)
 import View.Layout as Layout
 

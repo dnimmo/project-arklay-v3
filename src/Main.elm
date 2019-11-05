@@ -2,19 +2,18 @@ module Main exposing (main)
 
 import Browser exposing (Document, UrlRequest(..))
 import Browser.Navigation as Nav
-import Data.Game exposing (processSaveData, stateEncoder)
-import Data.Item exposing (itemsEncoder)
-import Data.Room exposing (roomInfo)
-import Data.SaveData as SaveData
 import Element exposing (Element, centerX, centerY, el, fill, layout, rgb255, width)
 import Element.Background as Background
 import Element.Font as Font
+import Item exposing (itemsEncoder)
 import Json.Decode exposing (Error, decodeValue)
 import Navigation exposing (Route(..), routeUrlRequest)
 import Page.Ending as Ending
-import Page.Game as Game
+import Page.Game as Game exposing (stateEncoder)
 import Page.Intro as Intro
+import Page.Intro.SaveData as SaveData exposing (processSaveData)
 import Ports
+import Room exposing (roomInfo)
 import Url exposing (Url)
 
 
@@ -31,7 +30,7 @@ type alias Model =
 
 type State
     = ViewIntro Intro.Model
-    | ViewGame Data.Game.Model
+    | ViewGame Game.Model
     | ViewEnding
 
 
@@ -70,7 +69,7 @@ update msg model =
 
                 Game ->
                     ( { model
-                        | state = ViewGame Data.Game.initialModel
+                        | state = ViewGame Game.initialModel
                       }
                     , Cmd.none
                     )
@@ -141,7 +140,7 @@ update msg model =
 
         GameLoaded (Err _) ->
             ( { model
-                | state = ViewGame Data.Game.initialModel
+                | state = ViewGame Game.initialModel
               }
             , Cmd.none
             )

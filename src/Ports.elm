@@ -1,20 +1,28 @@
 port module Ports exposing (deleteSaveData, gameLoaded, loadGame, saveGame)
 
-import Data.SaveData as SaveData
 import Json.Decode exposing (Value)
+
+
+type alias SaveData =
+    { inventory : List String
+    , itemsUsed : List String
+    , messageDisplayed : Maybe String
+    , room : String
+    , state : String
+    }
 
 
 
 -- OUTGOING
 
 
-port saveGame : SaveData.Model -> Cmd msg
+port saveGame : SaveData -> Cmd msg
 
 
 port deleteSaveData : () -> Cmd msg
 
 
-port loadGame : SaveData.Model -> Cmd msg
+port loadGame : SaveData -> Cmd msg
 
 
 

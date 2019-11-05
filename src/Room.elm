@@ -1,4 +1,4 @@
-module Data.Room exposing
+module Room exposing
     ( Room(..)
     , downstairsKey
     , eastKey
@@ -16,8 +16,8 @@ module Data.Room exposing
     , westKey
     )
 
-import Data.Item exposing (Item(..))
 import Dict exposing (Dict)
+import Item exposing (Item(..))
 
 
 type Room

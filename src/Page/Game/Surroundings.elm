@@ -1,8 +1,8 @@
 module Page.Game.Surroundings exposing (view)
 
-import Data.Item exposing (Item)
-import Data.Room exposing (Room, itemsThatCanBeUsed, roomInfo)
 import Element exposing (Element, paragraph, text)
+import Item exposing (Item)
+import Room exposing (Room, itemsThatCanBeUsed, roomInfo)
 
 
 type alias SurroundingsRequirements =

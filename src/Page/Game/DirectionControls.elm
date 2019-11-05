@@ -1,13 +1,13 @@
 module Page.Game.DirectionControls exposing (view)
 
 import Browser.Navigation as Nav
-import Data.Item exposing (Item)
-import Data.Room exposing (Room, downstairsKey, eastKey, endGameKey, enterKey, northKey, roomInfo, southKey, unlockRequirements, upstairsKey, westKey)
 import Dict exposing (Dict)
 import Element exposing (Element, centerX, centerY, column, fill, fillPortion, height, htmlAttribute, minimum, padding, paragraph, rgb255, row, spacing, text, width)
 import Element.Font as Font
 import Element.Input as Input
 import Html.Attributes exposing (id)
+import Item exposing (Item)
+import Room exposing (Room, downstairsKey, eastKey, endGameKey, enterKey, northKey, southKey, unlockRequirements, upstairsKey, westKey)
 
 
 buttonAttributes : Bool -> String -> List (Element.Attribute msg)

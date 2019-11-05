@@ -1,19 +1,69 @@
-module Page.Game exposing (Msg, update, view)
+module Page.Game exposing (Model, Msg, gameStateFromString, initialModel, stateEncoder, update, view)
 
 import Browser.Navigation as Nav
-import Data.Game as Game exposing (GameState(..))
-import Data.Item exposing (Item, itemInfo)
-import Data.Room exposing (Room, gameComplete, itemsThatCanBeUsed, roomInfo)
 import Element exposing (Element, column, fill, height, htmlAttribute, minimum, padding, paragraph, rgb255, row, text, width)
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
 import Html.Attributes exposing (id)
+import Item exposing (Item, itemInfo)
 import Navigation exposing (endingPath)
 import Page.Game.DirectionControls as DirectionControls
 import Page.Game.Surroundings as Surroundings
 import Ports
+import Room exposing (Room, gameComplete, itemsThatCanBeUsed, roomInfo, startingRoom)
 import View.Layout exposing (mainLayout)
+
+
+
+-- MODEL
+
+
+type alias Model =
+    { inventory : List Item
+    , itemsUsed : List Item
+    , messageDisplayed : Maybe String
+    , room : Room
+    , state : GameState
+    }
+
+
+initialModel : Model
+initialModel =
+    { inventory = []
+    , itemsUsed = []
+    , messageDisplayed = Nothing
+    , state = DisplayingDirections
+    , room = startingRoom
+    }
+
+
+type GameState
+    = DisplayingDirections
+    | DisplayingInventory
+
+
+stateEncoder : GameState -> String
+stateEncoder state =
+    case state of
+        DisplayingDirections ->
+            "Displaying directions"
+
+        DisplayingInventory ->
+            "Displaying inventory"
+
+
+gameStateFromString : String -> GameState
+gameStateFromString stateString =
+    case stateString of
+        "Displaying directions" ->
+            DisplayingDirections
+
+        "Displaying inventory" ->
+            DisplayingInventory
+
+        _ ->
+            DisplayingDirections
 
 
 
@@ -27,7 +77,7 @@ type Msg
     | ExamineRoom (Maybe Item)
 
 
-update : Msg -> Game.Model -> ( Game.Model, Cmd Msg )
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ChangeRoom room navKey ->
@@ -160,7 +210,7 @@ inventoryView inventory room =
         inventory
 
 
-view : Nav.Key -> Game.Model -> Element Msg
+view : Nav.Key -> Model -> Element Msg
 view navKey model =
     let
         { room, inventory, itemsUsed, state, messageDisplayed } =

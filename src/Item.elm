@@ -1,4 +1,4 @@
-module Data.Item exposing (Item(..), fromString, itemInfo, itemsEncoder)
+module Item exposing (Item(..), fromString, itemInfo, itemsEncoder)
 
 
 type Item
