@@ -1,4 +1,4 @@
-module View.Layout exposing (mainLayout)
+module Layout exposing (mainLayout)
 
 import Element exposing (Element, column, fill, fillPortion, none, row, spacing, width)
 import Element.Font as Font

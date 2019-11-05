@@ -2,7 +2,7 @@ module Page.Ending exposing (view)
 
 import Element exposing (Element, fill, padding, paragraph, row, text, width, wrappedRow)
 import Element.Font as Font
-import View.Layout as Layout
+import Layout
 
 
 view : Element msg

@@ -5,10 +5,10 @@ import Element exposing (Element, centerX, column, fill, htmlAttribute, padding,
 import Element.Font as Font
 import Element.Input as Input
 import Html.Attributes exposing (id)
+import Layout
 import Navigation exposing (gamePath)
 import Page.Intro.SaveData as SaveData
 import Ports exposing (loadGame)
-import View.Layout as Layout
 
 
 

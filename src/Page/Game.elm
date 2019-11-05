@@ -7,12 +7,12 @@ import Element.Font as Font
 import Element.Input as Input
 import Html.Attributes exposing (id)
 import Item exposing (Item, itemInfo)
+import Layout exposing (mainLayout)
 import Navigation exposing (endingPath)
 import Page.Game.DirectionControls as DirectionControls
 import Page.Game.Surroundings as Surroundings
 import Ports
 import Room exposing (Room, gameComplete, itemsThatCanBeUsed, roomInfo, startingRoom)
-import View.Layout exposing (mainLayout)
 
 
 
